@@ -621,7 +621,7 @@ GameObject:
   - component: {fileID: 969864339}
   - component: {fileID: 969864338}
   - component: {fileID: 969864337}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: DirtPath
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -61503,7 +61503,7 @@ GameObject:
   - component: {fileID: 1690362375}
   - component: {fileID: 1690362374}
   - component: {fileID: 1690362373}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: StonePath
   m_TagString: Untagged
   m_Icon: {fileID: 0}
