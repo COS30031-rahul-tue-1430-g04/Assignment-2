@@ -18,7 +18,9 @@ public class LevelTransitionManager : MonoBehaviour
             UnityEngine.Debug.Log("No more levels available.");
         }
     }
-
+    //take look at Unity events
+    //maybe call from outside without C# Update function
+    //Week 5 / Module 5
     void Update()
     {
         if (Keyboard.current.lKey.wasPressedThisFrame)
@@ -34,3 +36,5 @@ public class LevelTransitionManager : MonoBehaviour
 //add "cooler" level transition animations
 //Fade-in for new level
 //things like score, progession, buttons for "next level" or "retry level" come later
+
+//Game --> "LEVEL COMPLETE!" --> Animation --> Fade Out --> next Level
