@@ -14,7 +14,7 @@ TagManager:
   - Player
   - Solid
   - Ground
-  - 
+  - Houses
   - 
   - 
   - 
@@ -43,9 +43,6 @@ TagManager:
     locked: 0
   - name: Default
     uniqueID: 0
-    locked: 0
-  - name: Player
-    uniqueID: 2730642463
     locked: 0
   - name: Forground
     uniqueID: 105148311
