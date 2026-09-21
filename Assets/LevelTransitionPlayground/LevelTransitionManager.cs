@@ -14,38 +14,72 @@ public class LevelTransitionManager : MonoBehaviour
     public AudioSource audioSource;
     public AudioClip levelCompleteClip;
 
+    [Header("Fade Settings")]
+    public float fadeDuration = 0.5f;
+
     private bool levelCompleteShown = false;
+    private bool isTransitioning = false;
 
     void Start()
     {
         levelCompletePanel.SetActive(false);
-        backgroundOverlay.alpha = 0f;
+
+        // Scene starts dark and fades in
+        backgroundOverlay.alpha = 1f;
+        StartCoroutine(FadeInFromBlack());
     }
 
     void Update()
     {
-        if (Keyboard.current.lKey.wasPressedThisFrame && !levelCompleteShown)
+        if (Keyboard.current.lKey.wasPressedThisFrame &&
+            !levelCompleteShown &&
+            !isTransitioning)
         {
             ShowLevelComplete();
         }
     }
 
+    private IEnumerator FadeInFromBlack()
+    {
+        float time = 0f;
+
+        while (time < fadeDuration)
+        {
+            time += Time.deltaTime;
+
+            float progress = time / fadeDuration;
+
+            backgroundOverlay.alpha = Mathf.Lerp(1f, 0f, progress);
+
+            yield return null;
+        }
+
+        backgroundOverlay.alpha = 0f;
+    }
+
     public void ShowLevelComplete()
     {
+        if (levelCompleteShown)
+            return;
+
         levelCompleteShown = true;
+
         levelCompletePanel.SetActive(true);
+
         panelTransform.localScale = Vector3.zero;
 
-        // Sound abspielen
         if (audioSource != null && levelCompleteClip != null)
+        {
             audioSource.PlayOneShot(levelCompleteClip);
+        }
 
         StartCoroutine(AnimateLevelComplete());
     }
 
     private IEnumerator AnimateLevelComplete()
     {
-        float duration = 1.5f;
+        
+        float duration = 1.5f; //don't change - alignes perfectly with soundtrack
         float time = 0f;
 
         while (time < duration)
@@ -54,10 +88,15 @@ public class LevelTransitionManager : MonoBehaviour
 
             float progress = time / duration;
 
-            backgroundOverlay.alpha = Mathf.Lerp(0f, 0.75f, progress);
+            // darkens the map
+            backgroundOverlay.alpha =
+                Mathf.Lerp(0f, 0.75f, progress);
 
-            float scale = Mathf.Lerp(0.8f, 1f, progress);
-            panelTransform.localScale = new Vector3(scale, scale, 1f);
+            float scale =
+                Mathf.Lerp(0.8f, 1f, progress);
+
+            panelTransform.localScale =
+                new Vector3(scale, scale, 1f);
 
             yield return null;
         }
@@ -68,26 +107,67 @@ public class LevelTransitionManager : MonoBehaviour
 
     public void RestartLevel()
     {
-        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        if (isTransitioning)
+            return;
 
-        SceneManager.LoadScene(currentSceneIndex);
+        isTransitioning = true;
+
+        StartCoroutine(FadeAndLoad(
+            SceneManager.GetActiveScene().buildIndex
+        ));
     }
 
     public void LoadNextLevel()
     {
-        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-        int nextSceneIndex = currentSceneIndex + 1;
+        if (isTransitioning)
+            return;
 
-        if (nextSceneIndex < SceneManager.sceneCountInBuildSettings)
+        int currentSceneIndex =
+            SceneManager.GetActiveScene().buildIndex;
+
+        int nextSceneIndex =
+            currentSceneIndex + 1;
+
+        if (nextSceneIndex <
+            SceneManager.sceneCountInBuildSettings)
         {
-            SceneManager.LoadScene(nextSceneIndex);
+            isTransitioning = true;
+
+            StartCoroutine(FadeAndLoad(nextSceneIndex));
         }
         else
         {
-            UnityEngine.Debug.Log("No more levels available.");
+            UnityEngine.Debug.Log(
+                "No more levels available."
+            );
         }
+    }
+
+    private IEnumerator FadeAndLoad(int sceneIndex)
+    {
+        float startAlpha = backgroundOverlay.alpha;
+        float time = 0f;
+
+        while (time < fadeDuration)
+        {
+            time += Time.deltaTime;
+
+            float progress = time / fadeDuration;
+
+            backgroundOverlay.alpha =
+                Mathf.Lerp(startAlpha, 1f, progress);
+
+            yield return null;
+        }
+
+        backgroundOverlay.alpha = 1f;
+
+        SceneManager.LoadScene(sceneIndex);
     }
 }
 
-// "level complete" sign added
-// "
+/*
+level transition complete
+some minor UI changes:
+- colours are horrible
+- sounds for buttonclicking, level start (maybe along with fade-in), level end (maybe along with fade out),...
