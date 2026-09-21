@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 using System.Collections;
@@ -9,6 +9,10 @@ public class LevelTransitionManager : MonoBehaviour
     public GameObject levelCompletePanel;
     public CanvasGroup backgroundOverlay;
     public RectTransform panelTransform;
+
+    [Header("Sound")]
+    public AudioSource audioSource;
+    public AudioClip levelCompleteClip;
 
     private bool levelCompleteShown = false;
 
@@ -29,17 +33,19 @@ public class LevelTransitionManager : MonoBehaviour
     public void ShowLevelComplete()
     {
         levelCompleteShown = true;
-
         levelCompletePanel.SetActive(true);
-
         panelTransform.localScale = Vector3.zero;
+
+        // Sound abspielen
+        if (audioSource != null && levelCompleteClip != null)
+            audioSource.PlayOneShot(levelCompleteClip);
 
         StartCoroutine(AnimateLevelComplete());
     }
 
     private IEnumerator AnimateLevelComplete()
     {
-        float duration = 0.5f;
+        float duration = 1.5f;
         float time = 0f;
 
         while (time < duration)
@@ -82,3 +88,6 @@ public class LevelTransitionManager : MonoBehaviour
         }
     }
 }
+
+// "level complete" sign added
+// "
