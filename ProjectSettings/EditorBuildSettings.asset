@@ -8,6 +8,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
+  - enabled: 1
+    path: Assets/LevelTransitionPlayground/LevelTransitionTest.unity
+    guid: 2c8cc2a6bebbd7541b1af38e1ecb0fa8
+  - enabled: 1
+    path: Assets/LevelTransitionPlayground/Level2Test.unity
+    guid: 39d593abf598d1a4286730d6dde22b09
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
