@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
 
     private float terrainSpeedMultiplier = 1f;
-    private List<TerrainZone> activeZones = new List<TerrainZone>();
+   // private List<TerrainZone> activeZones = new List<TerrainZone>();
 
     private InputAction moveAction;
     private InputAction sprint;
@@ -56,17 +56,25 @@ public class PlayerController : MonoBehaviour
         yield return null;
 
         LayerMask groundLayer = LayerMask.GetMask("Ground");
-        Collider2D[] startZones = Physics2D.OverlapCircleAll(transform.position, 1f, groundLayer);
+        Collider2D[] startZones =
+            Physics2D.OverlapCircleAll(transform.position, 1f, groundLayer);
 
         foreach (Collider2D col in startZones)
         {
             UnityEngine.Debug.Log("Found collider: " + col.gameObject.name);
+
             TerrainZone zone = col.GetComponent<TerrainZone>();
+
             if (zone != null)
             {
-                activeZones.Add(zone);
                 terrainSpeedMultiplier = zone.speedMultiplier;
-                UnityEngine.Debug.Log("Start Zone: " + col.gameObject.name);
+
+                UnityEngine.Debug.Log(
+                    "Start Zone: " + col.gameObject.name +
+                    " | Speed: " + zone.speedMultiplier
+                );
+
+                break;
             }
         }
     }
@@ -102,14 +110,19 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         TerrainZone zone = other.GetComponent<TerrainZone>();
+
         if (zone != null)
         {
-            activeZones.Add(zone);
             terrainSpeedMultiplier = zone.speedMultiplier;
-            UnityEngine.Debug.Log("Enter: " + other.gameObject.name + " Speed: " + zone.speedMultiplier);
+
+            UnityEngine.Debug.Log(
+                "Entered: " + other.gameObject.name +
+                " | Speed Multiplier: " + terrainSpeedMultiplier
+            );
         }
     }
 
+    /*
     private void OnTriggerExit2D(Collider2D other)
     {
         TerrainZone zone = other.GetComponent<TerrainZone>();
@@ -131,6 +144,7 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+    */
 
     private void TryInteract()
     {
