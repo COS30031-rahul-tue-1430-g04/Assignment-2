@@ -15,7 +15,7 @@ public class LevelTransitionManager : MonoBehaviour
     public AudioClip levelCompleteClip;
 
     [Header("Fade Settings")]
-    public float fadeDuration = 0.5f;
+    public float fadeDuration = 1.5f;
 
     private bool levelCompleteShown = false;
     private bool isTransitioning = false;
@@ -29,6 +29,7 @@ public class LevelTransitionManager : MonoBehaviour
         StartCoroutine(FadeInFromBlack());
     }
 
+    // Replace "Keyboard press L" with "Progession Bar 100 %"
     void Update()
     {
         if (Keyboard.current.lKey.wasPressedThisFrame &&
