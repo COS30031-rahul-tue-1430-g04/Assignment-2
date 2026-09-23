@@ -15,7 +15,9 @@ public class PlayerController : MonoBehaviour
 
 	private Rigidbody2D rb;
 
-	private InputAction moveAction;
+    private float terrainSpeedMultiplier = 1f;
+
+    private InputAction moveAction;
 	private InputAction sprint;
 	private InputAction interact;
 
@@ -77,7 +79,9 @@ public class PlayerController : MonoBehaviour
 				? moveSpeed * sprintMultiplier
 				: moveSpeed;
 
-		rb.linearVelocity = moveInput * currentSpeed;
+        currentSpeed *= terrainSpeedMultiplier; //depending on which terrain the player is
+
+        rb.linearVelocity = moveInput * currentSpeed;
 	}
 
 	private void TryInteract()
@@ -114,4 +118,25 @@ public class PlayerController : MonoBehaviour
 			interactionRadius
 		);
 	}
+
+	//trigger based suits well for our scenario
+	//own colliders to tell player on what terrain he currently is
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        TerrainZone zone = other.GetComponent<TerrainZone>();
+        if (zone != null)
+            terrainSpeedMultiplier = zone.speedMultiplier;
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        TerrainZone zone = other.GetComponent<TerrainZone>();
+        if (zone != null)
+            terrainSpeedMultiplier = 1f; // reset
+    }
 }
+
+//Trigger Overlap Problem
+//only when character changes terrains, the speed change applies
+//after staying in new terrain, the new speed is not applied
+//--> because two tilemaps overlap?
