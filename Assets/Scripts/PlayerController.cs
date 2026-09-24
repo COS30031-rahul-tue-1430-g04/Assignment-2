@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -13,6 +14,9 @@ public class PlayerController : MonoBehaviour
 	[SerializeField]
 	private float interactionRadius = 1.5f;
 
+	private static readonly int XDirHash = Animator.StringToHash("XDir");
+	private static readonly int YDirHash = Animator.StringToHash("YDir");
+	private Animator animator;
 	private Rigidbody2D rb;
 
 	private InputAction moveAction;
@@ -20,11 +24,13 @@ public class PlayerController : MonoBehaviour
 	private InputAction interact;
 
 	private Vector2 moveInput;
+	private Vector2 targetVelocity;
 	private bool isSprinting;
 
 	void Start()
 	{
 		rb = GetComponent<Rigidbody2D>();
+		TryGetComponent(out animator);
 
 		moveAction = InputSystem.actions.FindAction("Move");
 		sprint = InputSystem.actions.FindAction("Sprint");
@@ -35,53 +41,59 @@ public class PlayerController : MonoBehaviour
 		Debug.Log("Interact Action: " + interact);
 
 		if (moveAction != null)
+		{
 			moveAction.Enable();
-
+			moveAction.performed += UpdateMoveInput;
+			moveAction.canceled += UpdateMoveInput;
+		}
 		if (sprint != null)
+		{
 			sprint.Enable();
-
+			sprint.performed += UpdateSprintInput;
+			sprint.canceled += UpdateSprintInput;
+		}
 		if (interact != null)
+		{
 			interact.Enable();
-	}
-
-	void Update()
-	{
-		// Movement
-		if (moveAction != null)
-		{
-			moveInput = moveAction.ReadValue<Vector2>();
-		}
-
-		// Sprint
-		if (sprint != null)
-		{
-			isSprinting = sprint.ReadValue<float>() > 0.5f;
-		}
-
-		// Interaction
-		if (interact != null && interact.WasPressedThisFrame())
-		{
-			Debug.Log("E WAS PRESSED!");
-
-			TryInteract();
+			interact.started += ctx => TryInteract();
 		}
 	}
-
-	void FixedUpdate()
+	void UpdateMoveInput(InputAction.CallbackContext context)
 	{
-		if (rb == null)
-			return;
+		moveInput = context.ReadValue<Vector2>();
+		UpdateVelocity();
 
+		// Update animator parameters
+		if (animator != null)
+		{
+			animator.SetInteger(XDirHash, (int)Math.Round(moveInput.x));
+			animator.SetInteger(YDirHash, (int)Math.Round(moveInput.y));
+		}
+	}
+	void UpdateSprintInput(InputAction.CallbackContext context)
+	{
+		isSprinting = context.ReadValue<float>() > 0.5f;
+		UpdateVelocity();
+	}
+	void UpdateVelocity()
+	{
 		float currentSpeed =
 			isSprinting
 				? moveSpeed * sprintMultiplier
 				: moveSpeed;
+		targetVelocity = moveInput * currentSpeed;
+	}
 
-		rb.linearVelocity = moveInput * currentSpeed;
+	void FixedUpdate()
+	{
+		if (rb != null)
+			rb.linearVelocity = targetVelocity;
 	}
 
 	private void TryInteract()
 	{
+		Debug.Log("E WAS PRESSED!");
+
 		Collider2D[] objects =
 			Physics2D.OverlapCircleAll(
 				transform.position,
@@ -92,10 +104,7 @@ public class PlayerController : MonoBehaviour
 
 		foreach (Collider2D obj in objects)
 		{
-			AssetInteraction asset =
-				obj.GetComponent<AssetInteraction>();
-
-			if (asset != null)
+			if (obj.TryGetComponent(out AssetInteraction asset))
 			{
 				Debug.Log("ASSET FOUND: " + asset.assetName);
 
