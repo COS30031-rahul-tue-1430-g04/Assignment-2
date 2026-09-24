@@ -1,32 +1,30 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField]
-    private float moveSpeed = 5f;
+	[SerializeField]
+	private float moveSpeed = 5f;
 
-    [SerializeField]
-    private float sprintMultiplier = 2f;
+	[SerializeField]
+	private float sprintMultiplier = 2f;
 
-    [SerializeField]
-    private float interactionRadius = 1.5f;
+	[SerializeField]
+	private float interactionRadius = 1.5f;
 
 	private static readonly int XDirHash = Animator.StringToHash("XDir");
 	private static readonly int YDirHash = Animator.StringToHash("YDir");
 	private Animator animator;
 	private Rigidbody2D rb;
 
-    private float terrainSpeedMultiplier = 1f;
-   // private List<TerrainZone> activeZones = new List<TerrainZone>();
+	private float terrainSpeedMultiplier = 1f;
+	// private List<TerrainZone> activeZones = new List<TerrainZone>();
 
-    private InputAction moveAction;
-    private InputAction sprint;
-    private InputAction interact;
+	private InputAction moveAction;
+	private InputAction sprint;
+	private InputAction interact;
 
 	private Vector2 moveInput;
 	private Vector2 targetVelocity;
@@ -37,13 +35,13 @@ public class PlayerController : MonoBehaviour
 		rb = GetComponent<Rigidbody2D>();
 		TryGetComponent(out animator);
 
-        moveAction = InputSystem.actions.FindAction("Move");
-        sprint = InputSystem.actions.FindAction("Sprint");
-        interact = InputSystem.actions.FindAction("Interact");
+		moveAction = InputSystem.actions.FindAction("Move");
+		sprint = InputSystem.actions.FindAction("Sprint");
+		interact = InputSystem.actions.FindAction("Interact");
 
-        UnityEngine.Debug.Log("Move Action: " + moveAction);
-        UnityEngine.Debug.Log("Sprint Action: " + sprint);
-        UnityEngine.Debug.Log("Interact Action: " + interact);
+		Debug.Log("Move Action: " + moveAction);
+		Debug.Log("Sprint Action: " + sprint);
+		Debug.Log("Interact Action: " + interact);
 
 		if (moveAction != null)
 		{
@@ -96,19 +94,18 @@ public class PlayerController : MonoBehaviour
 			rb.linearVelocity = targetVelocity;
 	}
 	private void OnTriggerEnter2D(Collider2D other)
-    {
-        TerrainZone zone = other.GetComponent<TerrainZone>();
+	{
+		if (other.TryGetComponent<TerrainZone>(out var zone))
+		{
+			terrainSpeedMultiplier = zone.speedMultiplier;
+			UpdateVelocity();
 
-        if (zone != null)
-        {
-            terrainSpeedMultiplier = zone.speedMultiplier;
-
-            Debug.Log(
-                "Entered: " + other.gameObject.name +
-                " | Speed Multiplier: " + terrainSpeedMultiplier
-            );
-        }
-    }
+			Debug.Log(
+				"Entered: " + other.gameObject.name +
+				" | Speed Multiplier: " + terrainSpeedMultiplier
+			);
+		}
+	}
 
 	private void TryInteract()
 	{
@@ -136,8 +133,8 @@ public class PlayerController : MonoBehaviour
 		Debug.Log("NO ASSET NEARBY!");
 	}
 
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.DrawWireSphere(transform.position, interactionRadius);
-    }
+	private void OnDrawGizmosSelected()
+	{
+		Gizmos.DrawWireSphere(transform.position, interactionRadius);
+	}
 }
