@@ -155,6 +155,7 @@ MonoBehaviour:
   moveSpeed: 3
   sprintMultiplier: 2
   interactionRadius: 3
+  defaultTerrainSpeedMultiplier: 0.65
 --- !u!50 &33073585
 Rigidbody2D:
   serializedVersion: 5
@@ -1957,7 +1958,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 2.8125
+  orthographic size: 3.71875
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -2550,7 +2551,7 @@ CompositeCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_GeometryType: 0
+  m_GeometryType: 1
   m_GenerationType: 0
   m_EdgeRadius: 0
   m_ColliderPaths:
@@ -39530,7 +39531,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3182689623683e844917fb17ac26314e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TerrainZone
-  speedMultiplier: 0.8
+  speedMultiplier: 1
 --- !u!1 &1048329008
 GameObject:
   m_ObjectHideFlags: 0
@@ -62270,7 +62271,7 @@ CompositeCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_GeometryType: 0
+  m_GeometryType: 1
   m_GenerationType: 0
   m_EdgeRadius: 0
   m_ColliderPaths:
@@ -70168,7 +70169,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3182689623683e844917fb17ac26314e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TerrainZone
-  speedMultiplier: 1.8
+  speedMultiplier: 1.35
 --- !u!1001 &1780013558
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -70734,7 +70735,7 @@ CompositeCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -84020,7 +84021,6 @@ SceneRoots:
   m_Roots:
   - {fileID: 519420032}
   - {fileID: 619394802}
-  - {fileID: 33073588}
   - {fileID: 1107446080}
   - {fileID: 104022288}
   - {fileID: 1398628959}
@@ -84028,3 +84028,4 @@ SceneRoots:
   - {fileID: 1260933890}
   - {fileID: 122644671}
   - {fileID: 1622875492}
+  - {fileID: 33073588}

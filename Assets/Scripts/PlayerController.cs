@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -14,13 +15,16 @@ public class PlayerController : MonoBehaviour
 	[SerializeField]
 	private float interactionRadius = 1.5f;
 
+	[SerializeField]
+	private float defaultTerrainSpeedMultiplier = 0.8f;
+
 	private static readonly int XDirHash = Animator.StringToHash("XDir");
 	private static readonly int YDirHash = Animator.StringToHash("YDir");
 	private Animator animator;
 	private Rigidbody2D rb;
 
 	private float terrainSpeedMultiplier = 1f;
-	// private List<TerrainZone> activeZones = new List<TerrainZone>();
+	private readonly List<TerrainZone> activeZones = new();
 
 	private InputAction moveAction;
 	private InputAction sprint;
@@ -95,16 +99,32 @@ public class PlayerController : MonoBehaviour
 	}
 	private void OnTriggerEnter2D(Collider2D other)
 	{
-		if (other.TryGetComponent<TerrainZone>(out var zone))
+		if (other.TryGetComponent(out TerrainZone zone))
 		{
-			terrainSpeedMultiplier = zone.speedMultiplier;
-			UpdateVelocity();
-
+			activeZones.Add(zone);
 			Debug.Log(
 				"Entered: " + other.gameObject.name +
-				" | Speed Multiplier: " + terrainSpeedMultiplier
+				" | Speed Multiplier: " + zone.speedMultiplier
 			);
+			UpdateTerrainSpeedMultiplier();
 		}
+	}
+	private void OnTriggerExit2D(Collider2D other)
+	{
+		if (other.TryGetComponent(out TerrainZone zone))
+		{
+			activeZones.Remove(zone);
+			Debug.Log(
+				"Exited: " + other.gameObject.name +
+				" | Speed Multiplier: " + zone.speedMultiplier
+			);
+			UpdateTerrainSpeedMultiplier();
+		}
+	}
+	private void UpdateTerrainSpeedMultiplier()
+	{
+		terrainSpeedMultiplier = activeZones.Count > 0 ? activeZones[^1].speedMultiplier : defaultTerrainSpeedMultiplier;
+		UpdateVelocity();
 	}
 
 	private void TryInteract()
