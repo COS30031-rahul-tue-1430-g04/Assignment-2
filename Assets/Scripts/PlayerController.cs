@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,7 +16,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float interactionRadius = 1.5f;
 
-    private Rigidbody2D rb;
+	private static readonly int XDirHash = Animator.StringToHash("XDir");
+	private static readonly int YDirHash = Animator.StringToHash("YDir");
+	private Animator animator;
+	private Rigidbody2D rb;
 
     private float terrainSpeedMultiplier = 1f;
    // private List<TerrainZone> activeZones = new List<TerrainZone>();
@@ -24,12 +28,14 @@ public class PlayerController : MonoBehaviour
     private InputAction sprint;
     private InputAction interact;
 
-    private Vector2 moveInput;
-    private bool isSprinting;
+	private Vector2 moveInput;
+	private Vector2 targetVelocity;
+	private bool isSprinting;
 
-    void Start()
-    {
-        rb = GetComponent<Rigidbody2D>();
+	void Start()
+	{
+		rb = GetComponent<Rigidbody2D>();
+		TryGetComponent(out animator);
 
         moveAction = InputSystem.actions.FindAction("Move");
         sprint = InputSystem.actions.FindAction("Sprint");
@@ -39,75 +45,57 @@ public class PlayerController : MonoBehaviour
         UnityEngine.Debug.Log("Sprint Action: " + sprint);
         UnityEngine.Debug.Log("Interact Action: " + interact);
 
-        if (moveAction != null)
-            moveAction.Enable();
+		if (moveAction != null)
+		{
+			moveAction.Enable();
+			moveAction.performed += UpdateMoveInput;
+			moveAction.canceled += UpdateMoveInput;
+		}
+		if (sprint != null)
+		{
+			sprint.Enable();
+			sprint.performed += UpdateSprintInput;
+			sprint.canceled += UpdateSprintInput;
+		}
+		if (interact != null)
+		{
+			interact.Enable();
+			interact.started += ctx => TryInteract();
+		}
+	}
+	void UpdateMoveInput(InputAction.CallbackContext context)
+	{
+		moveInput = context.ReadValue<Vector2>();
+		UpdateVelocity();
 
-        if (sprint != null)
-            sprint.Enable();
+		// Update animator parameters
+		if (animator != null)
+		{
+			animator.SetInteger(XDirHash, (int)Math.Round(moveInput.x));
+			animator.SetInteger(YDirHash, (int)Math.Round(moveInput.y));
+		}
+	}
+	void UpdateSprintInput(InputAction.CallbackContext context)
+	{
+		isSprinting = context.ReadValue<float>() > 0.5f;
+		UpdateVelocity();
+	}
+	void UpdateVelocity()
+	{
+		float currentSpeed =
+			isSprinting
+				? moveSpeed * sprintMultiplier
+				: moveSpeed;
+		currentSpeed *= terrainSpeedMultiplier;
+		targetVelocity = moveInput * currentSpeed;
+	}
 
-        if (interact != null)
-            interact.Enable();
-
-        StartCoroutine(InitialTerrainCheck());
-    }
-
-    private IEnumerator InitialTerrainCheck()
-    {
-        yield return null;
-
-        LayerMask groundLayer = LayerMask.GetMask("Ground");
-        Collider2D[] startZones =
-            Physics2D.OverlapCircleAll(transform.position, 1f, groundLayer);
-
-        foreach (Collider2D col in startZones)
-        {
-            UnityEngine.Debug.Log("Found collider: " + col.gameObject.name);
-
-            TerrainZone zone = col.GetComponent<TerrainZone>();
-
-            if (zone != null)
-            {
-                terrainSpeedMultiplier = zone.speedMultiplier;
-
-                UnityEngine.Debug.Log(
-                    "Start Zone: " + col.gameObject.name +
-                    " | Speed: " + zone.speedMultiplier
-                );
-
-                break;
-            }
-        }
-    }
-
-    void Update()
-    {
-        if (moveAction != null)
-            moveInput = moveAction.ReadValue<Vector2>();
-
-        if (sprint != null)
-            isSprinting = sprint.ReadValue<float>() > 0.5f;
-
-        if (interact != null && interact.WasPressedThisFrame())
-        {
-            UnityEngine.Debug.Log("E WAS PRESSED!");
-            TryInteract();
-        }
-    }
-
-    void FixedUpdate()
-    {
-        if (rb == null)
-            return;
-
-        float currentSpeed = isSprinting
-            ? moveSpeed * sprintMultiplier
-            : moveSpeed;
-
-        currentSpeed *= terrainSpeedMultiplier;
-        rb.linearVelocity = moveInput * currentSpeed;
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
+	void FixedUpdate()
+	{
+		if (rb != null)
+			rb.linearVelocity = targetVelocity;
+	}
+	private void OnTriggerEnter2D(Collider2D other)
     {
         TerrainZone zone = other.GetComponent<TerrainZone>();
 
@@ -115,54 +103,38 @@ public class PlayerController : MonoBehaviour
         {
             terrainSpeedMultiplier = zone.speedMultiplier;
 
-            UnityEngine.Debug.Log(
+            Debug.Log(
                 "Entered: " + other.gameObject.name +
                 " | Speed Multiplier: " + terrainSpeedMultiplier
             );
         }
     }
 
-    /*
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        TerrainZone zone = other.GetComponent<TerrainZone>();
-        if (zone != null)
-        {
-            activeZones.Remove(zone);
+	private void TryInteract()
+	{
+		Debug.Log("E WAS PRESSED!");
 
-            // Nimm die Zone die zuletzt betreten wurde (nicht die letzte im Stack)
-            if (activeZones.Count > 0)
-            {
-                TerrainZone currentZone = activeZones[activeZones.Count - 1];
-                terrainSpeedMultiplier = currentZone.speedMultiplier;
-                UnityEngine.Debug.Log("Exit, now on: " + currentZone.speedMultiplier);
-            }
-            else
-            {
-                terrainSpeedMultiplier = 1f;
-                UnityEngine.Debug.Log("Exit, default speed");
-            }
-        }
-    }
-    */
+		Collider2D[] objects =
+			Physics2D.OverlapCircleAll(
+				transform.position,
+				interactionRadius
+			);
 
-    private void TryInteract()
-    {
-        Collider2D[] objects = Physics2D.OverlapCircleAll(transform.position, interactionRadius);
-        UnityEngine.Debug.Log("Checking for nearby assets...");
+		Debug.Log("Checking for nearby assets...");
 
-        foreach (Collider2D obj in objects)
-        {
-            AssetInteraction asset = obj.GetComponent<AssetInteraction>();
-            if (asset != null)
-            {
-                UnityEngine.Debug.Log("ASSET FOUND: " + asset.assetName);
-                asset.SelectAsset();
-                return;
-            }
-        }
-        UnityEngine.Debug.Log("NO ASSET NEARBY!");
-    }
+		foreach (Collider2D obj in objects)
+		{
+			if (obj.TryGetComponent(out AssetInteraction asset))
+			{
+				Debug.Log("ASSET FOUND: " + asset.assetName);
+
+				asset.SelectAsset();
+				return;
+			}
+		}
+
+		Debug.Log("NO ASSET NEARBY!");
+	}
 
     private void OnDrawGizmosSelected()
     {
