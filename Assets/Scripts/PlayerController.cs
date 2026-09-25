@@ -17,11 +17,14 @@ public class PlayerController : MonoBehaviour
 
 	[SerializeField]
 	private float defaultTerrainSpeedMultiplier = 0.8f;
+	[SerializeField]
+	private float waterHeightOffset = 0.3f;
 
 	private static readonly int XDirHash = Animator.StringToHash("XDir");
 	private static readonly int YDirHash = Animator.StringToHash("YDir");
 	private Animator animator;
 	private Rigidbody2D rb;
+	private SpriteRenderer spriteRenderer;
 
 	private float terrainSpeedMultiplier = 1f;
 	private readonly List<TerrainZone> activeZones = new();
@@ -38,6 +41,7 @@ public class PlayerController : MonoBehaviour
 	{
 		rb = GetComponent<Rigidbody2D>();
 		TryGetComponent(out animator);
+		TryGetComponent(out spriteRenderer);
 
 		moveAction = InputSystem.actions.FindAction("Move");
 		sprint = InputSystem.actions.FindAction("Sprint");
@@ -102,6 +106,14 @@ public class PlayerController : MonoBehaviour
 		if (other.TryGetComponent(out TerrainZone zone))
 		{
 			activeZones.Add(zone);
+			if (zone.isWater)
+			{
+				if (spriteRenderer != null)
+					spriteRenderer.maskInteraction = SpriteMaskInteraction.VisibleOutsideMask;
+				if (rb != null)
+					rb.MovePosition(rb.position + (Vector2.down * waterHeightOffset));
+				Debug.Log("Entered water zone: " + other.gameObject.name);
+			}
 			Debug.Log(
 				"Entered: " + other.gameObject.name +
 				" | Speed Multiplier: " + zone.speedMultiplier
@@ -114,6 +126,14 @@ public class PlayerController : MonoBehaviour
 		if (other.TryGetComponent(out TerrainZone zone))
 		{
 			activeZones.Remove(zone);
+			if (zone.isWater)
+			{
+				if (spriteRenderer != null)
+					spriteRenderer.maskInteraction = SpriteMaskInteraction.None;
+				if (rb != null)
+					rb.MovePosition(rb.position + (Vector2.up * waterHeightOffset));
+				Debug.Log("Exited water zone: " + other.gameObject.name);
+			}
 			Debug.Log(
 				"Exited: " + other.gameObject.name +
 				" | Speed Multiplier: " + zone.speedMultiplier
