@@ -72,7 +72,7 @@ public class GameManager : MonoBehaviour
 
 		interactionPanel.SetActive(false);
 		
-		//feedbackPanel.SetActive(true);
+		feedbackPanel.SetActive(true);
 
 		if (correct)
 		{
@@ -80,7 +80,7 @@ public class GameManager : MonoBehaviour
 			score += 100;
 			completedAssets++;
 
-			//feedbackText.text = "✓ Correct!";
+			feedbackText.text = "✓ Correct!";
 		}
 		else
 		{
@@ -89,11 +89,11 @@ public class GameManager : MonoBehaviour
 
 			completedAssets++;
 
-			//feedbackText.text = "✗ Incorrect";
+			feedbackText.text = "✗ Incorrect";
 		}
 
-		//explanationText.text =
-			//currentAsset.explanation;
+		explanationText.text =
+			currentAsset.explanation;
 
 		UpdateHUD();
 	}
@@ -126,6 +126,14 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
+	public void closeFeedbackPanel()
+	{
+		feedbackPanel.SetActive(false);
+	}
+	
+	
+	
+	
 	private void LevelComplete()
 	{
 		levelCompletePanel.SetActive(true);

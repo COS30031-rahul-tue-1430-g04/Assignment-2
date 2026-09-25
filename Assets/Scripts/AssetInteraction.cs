@@ -6,7 +6,7 @@ public class AssetInteraction : MonoBehaviour, IPointerClickHandler
 {
 	public GameObject player;
 
-	
+	public bool alreadySelected = false;//measures wether or not item has already been selected
 
 	[Header("Asset Information")]
 	public string assetName = "Test Asset";
@@ -17,7 +17,7 @@ public class AssetInteraction : MonoBehaviour, IPointerClickHandler
 
 	public bool councilOwned = true;
 
-	private bool playerNearby;
+	//private bool playerNearby;
 
 	/*private void OnTriggerEnter2D(Collider2D other)
 	{
@@ -49,8 +49,9 @@ public class AssetInteraction : MonoBehaviour, IPointerClickHandler
     {
         Debug.Log(this.name + " has been clicked");
         
-        if (playerwithinRange(7))
+        if (playerwithinRange(7) && alreadySelected == false)
         {
+			alreadySelected = true;
             SelectAsset();
             Debug.Log(this.name + " has been clicked and is within range");
         }
