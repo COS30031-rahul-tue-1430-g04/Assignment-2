@@ -1,7 +1,13 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class AssetInteraction : MonoBehaviour
+
+public class AssetInteraction : MonoBehaviour, IPointerClickHandler
 {
+	public GameObject player;
+
+	
+
 	[Header("Asset Information")]
 	public string assetName = "Test Asset";
 
@@ -13,7 +19,7 @@ public class AssetInteraction : MonoBehaviour
 
 	private bool playerNearby;
 
-	private void OnTriggerEnter2D(Collider2D other)
+	/*private void OnTriggerEnter2D(Collider2D other)
 	{
 		if (other.CompareTag("Player"))
 		{
@@ -32,10 +38,33 @@ public class AssetInteraction : MonoBehaviour
 	public bool IsPlayerNearby()
 	{
 		return playerNearby;
-	}
+	}*/
 
 	public void SelectAsset()
 	{
 		GameManager.Instance.OpenAssetQuestion(this);
 	}
+	
+	public void OnPointerClick(PointerEventData eventData)//happens when object is clicked
+    {
+        Debug.Log(this.name + " has been clicked");
+        
+        if (playerwithinRange(7))
+        {
+            SelectAsset();
+            Debug.Log(this.name + " has been clicked and is within range");
+        }
+    }
+
+    private bool playerwithinRange(int range) //checks player is within selection range
+    {
+        Vector3 playerv = player.transform.position;
+        float distance = Vector2.Distance(playerv, this.transform.position);
+        if (distance < range)
+        {
+            return (true);
+        }else{
+            return(false);
+        }
+    }
 }

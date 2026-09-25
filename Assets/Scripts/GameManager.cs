@@ -71,27 +71,29 @@ public class GameManager : MonoBehaviour
 			councilAnswer == currentAsset.councilOwned;
 
 		interactionPanel.SetActive(false);
-
-		feedbackPanel.SetActive(true);
+		
+		//feedbackPanel.SetActive(true);
 
 		if (correct)
 		{
+			Debug.Log("correct");
 			score += 100;
 			completedAssets++;
 
-			feedbackText.text = "✓ Correct!";
+			//feedbackText.text = "✓ Correct!";
 		}
 		else
 		{
+			Debug.Log("incorrect");
 			score -= 50;
 
 			completedAssets++;
 
-			feedbackText.text = "✗ Incorrect";
+			//feedbackText.text = "✗ Incorrect";
 		}
 
-		explanationText.text =
-			currentAsset.explanation;
+		//explanationText.text =
+			//currentAsset.explanation;
 
 		UpdateHUD();
 	}
