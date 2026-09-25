@@ -80,7 +80,7 @@ public class GameManager : MonoBehaviour
 			score += 100;
 			completedAssets++;
 
-			feedbackText.text = "✓ Correct!";
+			feedbackText.text = "Correct!";
 		}
 		else
 		{
@@ -89,7 +89,7 @@ public class GameManager : MonoBehaviour
 
 			completedAssets++;
 
-			feedbackText.text = "✗ Incorrect";
+			feedbackText.text = "Incorrect";
 		}
 
 		explanationText.text =
