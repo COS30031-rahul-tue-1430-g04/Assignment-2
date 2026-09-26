@@ -111,7 +111,7 @@ public class PlayerController : MonoBehaviour
 				if (spriteRenderer != null)
 					spriteRenderer.maskInteraction = SpriteMaskInteraction.VisibleOutsideMask;
 				if (rb != null)
-					rb.MovePosition(rb.position + (Vector2.down * waterHeightOffset));
+					//rb.MovePosition(rb.position + (Vector2.down * waterHeightOffset));
 				Debug.Log("Entered water zone: " + other.gameObject.name);
 			}
 			Debug.Log(
@@ -131,7 +131,7 @@ public class PlayerController : MonoBehaviour
 				if (spriteRenderer != null)
 					spriteRenderer.maskInteraction = SpriteMaskInteraction.None;
 				if (rb != null)
-					rb.MovePosition(rb.position + (Vector2.up * waterHeightOffset));
+					//rb.MovePosition(rb.position + (Vector2.up * waterHeightOffset));
 				Debug.Log("Exited water zone: " + other.gameObject.name);
 			}
 			Debug.Log(
