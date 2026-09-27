@@ -308,6 +308,16 @@ Tilemap:
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
       m_AllTileFlags: 1073741825
+  - first: {x: -5, y: -38, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 258
+      m_TileSpriteIndex: 258
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
+      dummyAlignment: 0
+      m_AllTileFlags: 1073741825
   - first: {x: -3, y: -38, z: 0}
     second:
       serializedVersion: 2
@@ -3186,6 +3196,8 @@ Tilemap:
     m_Data: {fileID: 11400000, guid: 20681a29ac875764ab26c639b9aaa5ef, type: 2}
   - m_RefCount: 1
     m_Data: {fileID: 11400000, guid: af401c6e8b88a514d99d6aa00b1b7ae0, type: 2}
+  - m_RefCount: 1
+    m_Data: {fileID: 11400000, guid: 8df35fc0f1550aa47b5c17a8e271338b, type: 2}
   m_TileSpriteArray:
   - m_RefCount: 1
     m_Data: {fileID: -1889472906, guid: 11d2fc13bbf54f24da3afbf553717a61, type: 3}
@@ -3703,8 +3715,10 @@ Tilemap:
     m_Data: {fileID: -1125222800, guid: 3628f98dd127d4841a90adffe844d770, type: 3}
   - m_RefCount: 1
     m_Data: {fileID: -1220965023, guid: 3628f98dd127d4841a90adffe844d770, type: 3}
+  - m_RefCount: 1
+    m_Data: {fileID: 21300000, guid: b869fd2e87768c342aacbe69ee825d52, type: 3}
   m_TileMatrixArray:
-  - m_RefCount: 258
+  - m_RefCount: 259
     m_Data:
       e00: 1
       e01: 0
@@ -3723,7 +3737,7 @@ Tilemap:
       e32: 0
       e33: 1
   m_TileColorArray:
-  - m_RefCount: 258
+  - m_RefCount: 259
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
@@ -3865,10 +3879,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8875134953779400737, guid: ad192fad3d52bd244969a9040f945a0a, type: 3}
-      propertyPath: m_DynamicOccludee
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3879,7 +3889,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7255318118803066289, guid: ad192fad3d52bd244969a9040f945a0a, type: 3}
   m_PrefabInstance: {fileID: 680456492450365930}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4911095660816325206
+--- !u!114 &5110547072809596608
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
