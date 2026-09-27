@@ -41,11 +41,11 @@ TagManager:
   - name: Map
     uniqueID: 909722267
     locked: 0
+  - name: Decorations
+    uniqueID: 105148311
+    locked: 0
   - name: Default
     uniqueID: 0
-    locked: 0
-  - name: Forground
-    uniqueID: 105148311
     locked: 0
   m_RenderingLayers:
   - Default
