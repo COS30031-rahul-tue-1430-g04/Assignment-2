@@ -1,7 +1,12 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class AssetInteraction : MonoBehaviour
+public class AssetInteraction : MonoBehaviour, IPointerClickHandler
 {
+	public GameObject player;
+
+	public bool alreadySelected = false;
+
 	[Header("Asset Information")]
 	public string assetName = "Test Asset";
 
@@ -11,31 +16,44 @@ public class AssetInteraction : MonoBehaviour
 
 	public bool councilOwned = true;
 
-	private bool playerNearby;
-
-	private void OnTriggerEnter2D(Collider2D other)
-	{
-		if (other.CompareTag("Player"))
-		{
-			playerNearby = true;
-		}
-	}
-
-	private void OnTriggerExit2D(Collider2D other)
-	{
-		if (other.CompareTag("Player"))
-		{
-			playerNearby = false;
-		}
-	}
-
-	public bool IsPlayerNearby()
-	{
-		return playerNearby;
-	}
-
 	public void SelectAsset()
 	{
+		// Stop the same asset from being selected again
+		if (alreadySelected)
+		{
+			Debug.Log(this.name + " has already been completed.");
+			return;
+		}
+
+		// Mark this asset as selected
+		alreadySelected = true;
+
+		// Open the question
 		GameManager.Instance.OpenAssetQuestion(this);
+
+		Debug.Log(this.name + " has been selected.");
+	}
+
+	public void OnPointerClick(PointerEventData eventData)
+	{
+		Debug.Log(this.name + " has been clicked.");
+
+		if (player != null && playerwithinRange(7))
+		{
+			SelectAsset();
+		}
+	}
+
+	private bool playerwithinRange(int range)
+	{
+		if (player == null)
+			return false;
+
+		Vector3 playerv = player.transform.position;
+
+		float distance =
+			Vector2.Distance(playerv, this.transform.position);
+
+		return distance < range;
 	}
 }

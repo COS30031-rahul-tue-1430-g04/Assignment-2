@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 public class Object : MonoBehaviour, IPointerClickHandler
 {
     public GameObject player;
-    
+    //public GameObject GameManager;
     
     //types determine whether the object is or isn't publicly managed
     public types myType = new types();
@@ -17,10 +17,11 @@ public class Object : MonoBehaviour, IPointerClickHandler
     
     public void OnPointerClick(PointerEventData eventData)//happens when object is clicked
     {
-        Debug.Log(this.name + " has been clicked");
+        Debug.Log(" has been clicked");
         
         if (playerwithinRange(7))
         {
+            //OpenAssetQuestion();
             Debug.Log(this.name + " has been clicked and is within range");
         }
     }

@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -15,33 +13,18 @@ public class PlayerController : MonoBehaviour
 	[SerializeField]
 	private float interactionRadius = 1.5f;
 
-	[SerializeField]
-	private float defaultTerrainSpeedMultiplier = 0.8f;
-	[SerializeField]
-	private float waterHeightOffset = 0.3f;
-
-	private static readonly int XDirHash = Animator.StringToHash("XDir");
-	private static readonly int YDirHash = Animator.StringToHash("YDir");
-	private Animator animator;
 	private Rigidbody2D rb;
-	private SpriteRenderer spriteRenderer;
-
-	private float terrainSpeedMultiplier = 1f;
-	private readonly List<TerrainZone> activeZones = new();
 
 	private InputAction moveAction;
 	private InputAction sprint;
 	private InputAction interact;
 
 	private Vector2 moveInput;
-	private Vector2 targetVelocity;
 	private bool isSprinting;
 
 	void Start()
 	{
 		rb = GetComponent<Rigidbody2D>();
-		TryGetComponent(out animator);
-		TryGetComponent(out spriteRenderer);
 
 		moveAction = InputSystem.actions.FindAction("Move");
 		sprint = InputSystem.actions.FindAction("Sprint");
@@ -52,129 +35,99 @@ public class PlayerController : MonoBehaviour
 		Debug.Log("Interact Action: " + interact);
 
 		if (moveAction != null)
-		{
 			moveAction.Enable();
-			moveAction.performed += UpdateMoveInput;
-			moveAction.canceled += UpdateMoveInput;
+
+		if (sprint != null)
+			sprint.Enable();
+
+		if (interact != null)
+			interact.Enable();
+	}
+
+	void Update()
+	{
+		// Movement
+		if (moveAction != null)
+		{
+			moveInput = moveAction.ReadValue<Vector2>();
 		}
+
+		// Sprint
 		if (sprint != null)
 		{
-			sprint.Enable();
-			sprint.performed += UpdateSprintInput;
-			sprint.canceled += UpdateSprintInput;
+			isSprinting = sprint.ReadValue<float>() > 0.5f;
 		}
-		if (interact != null)
-		{
-			interact.Enable();
-			interact.started += ctx => TryInteract();
-		}
-	}
-	void UpdateMoveInput(InputAction.CallbackContext context)
-	{
-		moveInput = context.ReadValue<Vector2>();
-		UpdateVelocity();
 
-		// Update animator parameters
-		if (animator != null)
+		// Interaction
+		if (interact != null && interact.WasPressedThisFrame())
 		{
-			animator.SetInteger(XDirHash, (int)Math.Round(moveInput.x));
-			animator.SetInteger(YDirHash, (int)Math.Round(moveInput.y));
+			Debug.Log("E WAS PRESSED!");
+
+			TryInteract();
 		}
-	}
-	void UpdateSprintInput(InputAction.CallbackContext context)
-	{
-		isSprinting = context.ReadValue<float>() > 0.5f;
-		UpdateVelocity();
-	}
-	void UpdateVelocity()
-	{
-		float currentSpeed =
-			isSprinting
-				? moveSpeed * sprintMultiplier
-				: moveSpeed;
-		currentSpeed *= terrainSpeedMultiplier;
-		targetVelocity = moveInput * currentSpeed;
 	}
 
 	void FixedUpdate()
 	{
-		if (rb != null)
-			rb.linearVelocity = targetVelocity;
-	}
-	private void OnTriggerEnter2D(Collider2D other)
-	{
-		if (other.TryGetComponent(out TerrainZone zone))
-		{
-			activeZones.Add(zone);
-			if (zone.isWater)
-			{
-				if (spriteRenderer != null)
-					spriteRenderer.maskInteraction = SpriteMaskInteraction.VisibleOutsideMask;
-				if (rb != null)
-					rb.MovePosition(rb.position + (Vector2.down * waterHeightOffset));
-				Debug.Log("Entered water zone: " + other.gameObject.name);
-			}
-			Debug.Log(
-				"Entered: " + other.gameObject.name +
-				" | Speed Multiplier: " + zone.speedMultiplier
-			);
-			UpdateTerrainSpeedMultiplier();
-		}
-	}
-	private void OnTriggerExit2D(Collider2D other)
-	{
-		if (other.TryGetComponent(out TerrainZone zone))
-		{
-			activeZones.Remove(zone);
-			if (zone.isWater)
-			{
-				if (spriteRenderer != null)
-					spriteRenderer.maskInteraction = SpriteMaskInteraction.None;
-				if (rb != null)
-					rb.MovePosition(rb.position + (Vector2.up * waterHeightOffset));
-				Debug.Log("Exited water zone: " + other.gameObject.name);
-			}
-			Debug.Log(
-				"Exited: " + other.gameObject.name +
-				" | Speed Multiplier: " + zone.speedMultiplier
-			);
-			UpdateTerrainSpeedMultiplier();
-		}
-	}
-	private void UpdateTerrainSpeedMultiplier()
-	{
-		terrainSpeedMultiplier = activeZones.Count > 0 ? activeZones[^1].speedMultiplier : defaultTerrainSpeedMultiplier;
-		UpdateVelocity();
+		if (rb == null)
+			return;
+
+		float currentSpeed =
+			isSprinting
+				? moveSpeed * sprintMultiplier
+				: moveSpeed;
+
+		rb.linearVelocity = moveInput * currentSpeed;
 	}
 
 	private void TryInteract()
 	{
-		Debug.Log("E WAS PRESSED!");
-
 		Collider2D[] objects =
-			Physics2D.OverlapCircleAll(
-				transform.position,
-				interactionRadius
-			);
+			Physics2D.OverlapCircleAll(transform.position, interactionRadius);
 
 		Debug.Log("Checking for nearby assets...");
 
+		AssetInteraction closestAsset = null;
+		float closestDistance = Mathf.Infinity;
+
 		foreach (Collider2D obj in objects)
 		{
-			if (obj.TryGetComponent(out AssetInteraction asset))
-			{
-				Debug.Log("ASSET FOUND: " + asset.assetName);
+			AssetInteraction asset = obj.GetComponent<AssetInteraction>();
 
-				asset.SelectAsset();
-				return;
+			if (asset == null)
+				continue;
+
+			// Ignore assets that have already been completed
+			if (asset.alreadySelected)
+				continue;
+
+			float distance =
+				Vector2.Distance(transform.position, asset.transform.position);
+
+			// Keep only the closest asset
+			if (distance < closestDistance)
+			{
+				closestDistance = distance;
+				closestAsset = asset;
 			}
 		}
 
-		Debug.Log("NO ASSET NEARBY!");
+		if (closestAsset != null)
+		{
+			Debug.Log("CLOSEST ASSET: " + closestAsset.assetName);
+			closestAsset.SelectAsset();
+		}
+		else
+		{
+			Debug.Log("NO AVAILABLE ASSET NEARBY!");
+		}
 	}
 
 	private void OnDrawGizmosSelected()
 	{
-		Gizmos.DrawWireSphere(transform.position, interactionRadius);
+		Gizmos.DrawWireSphere(
+			transform.position,
+			interactionRadius
+		);
 	}
 }
