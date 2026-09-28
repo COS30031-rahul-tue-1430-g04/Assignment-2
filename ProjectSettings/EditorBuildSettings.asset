@@ -6,14 +6,17 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 479be2df32e9aaa4aa5588d542b35b6a
+  - enabled: 1
+    path: Assets/Scenes/Rural Level.unity
+    guid: 08eec2193b56d09439386c464346b6a5
+  - enabled: 1
+    path: Assets/Scenes/Suburban Level.unity
+    guid: 79ae22481e3ab5449a01fac9f9587ac9
+  - enabled: 1
     path: Assets/Scenes/CommunityPrecinct.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
-  - enabled: 1
-    path: Assets/LevelTransitionPlayground/LevelTransitionTest.unity
-    guid: 2c8cc2a6bebbd7541b1af38e1ecb0fa8
-  - enabled: 1
-    path: Assets/LevelTransitionPlayground/Level2Test.unity
-    guid: 39d593abf598d1a4286730d6dde22b09
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
