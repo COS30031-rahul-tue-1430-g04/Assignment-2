@@ -927,7 +927,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6846584451881266002, guid: 329622bb2db253a4f9281732c95d3f5b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1315314661}
   m_SourcePrefab: {fileID: 100100000, guid: 329622bb2db253a4f9281732c95d3f5b, type: 3}
 --- !u!4 &133361237 stripped
 Transform:
@@ -35383,6 +35386,28 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7255318118803066289, guid: ad192fad3d52bd244969a9040f945a0a, type: 3}
   m_PrefabInstance: {fileID: 1306987311}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1315314659 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6846584451881266002, guid: 329622bb2db253a4f9281732c95d3f5b, type: 3}
+  m_PrefabInstance: {fileID: 133361236}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1315314661
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1315314659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 784b4809c2ca00d49a2b50ac93f8f3f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AssetInteraction
+  player: {fileID: 928914012}
+  alreadySelected: 0
+  assetName: Chair
+  explanation: This asset is generally managed by the council.
+  councilOwned: 1
 --- !u!1001 &1317745935
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -296321,6 +296346,7 @@ MonoBehaviour:
   score: 0
   completedAssets: 0
   totalAssets: 8
+  currentLevel: 1
   interactionPanel: {fileID: 1454682752}
   feedbackPanel: {fileID: 0}
   levelCompletePanel: {fileID: 0}
@@ -296330,6 +296356,7 @@ MonoBehaviour:
   explanationText: {fileID: 0}
   scoreText: {fileID: 1874230148}
   progressText: {fileID: 1319576902}
+  levelText: {fileID: 0}
   progressBar: {fileID: 1954620223}
 --- !u!4 &1688869825
 Transform:
@@ -298337,7 +298364,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 3.71875
+  orthographic size: 2.8125
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2

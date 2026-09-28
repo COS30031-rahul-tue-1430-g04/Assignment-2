@@ -1925,6 +1925,7 @@ GameObject:
   - component: {fileID: 519420033}
   - component: {fileID: 519420034}
   - component: {fileID: 519420035}
+  - component: {fileID: 519420036}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -2019,7 +2020,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 3.71875
+  orthographic size: 2.8125
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -2104,6 +2105,20 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   m_MaxRayIntersections: 0
+--- !u!114 &519420036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b454aaea78ecf0048bf994593d91d9f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraBounds
+  minBounds: {x: -10, y: -10}
+  maxBounds: {x: 10, y: 10}
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -40151,7 +40166,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 105148311
-  m_SortingLayer: 1
+  m_SortingLayer: -1
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
@@ -40262,7 +40277,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6846584451881266002, guid: 19b36d2c74a56ab49b3d3bbe231fe99a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1574933309}
   m_SourcePrefab: {fileID: 100100000, guid: 19b36d2c74a56ab49b3d3bbe231fe99a, type: 3}
 --- !u!4 &1180720169 stripped
 Transform:
@@ -40430,7 +40448,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 909722267
-  m_SortingLayer: -1
+  m_SortingLayer: -2
   m_SortingOrder: 2
   m_MaskInteraction: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
@@ -41082,7 +41100,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 909722267
-  m_SortingLayer: -1
+  m_SortingLayer: -2
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
@@ -54986,6 +55004,7 @@ MonoBehaviour:
   score: 0
   completedAssets: 0
   totalAssets: 8
+  currentLevel: 1
   interactionPanel: {fileID: 799994970}
   feedbackPanel: {fileID: 0}
   levelCompletePanel: {fileID: 0}
@@ -54995,6 +55014,7 @@ MonoBehaviour:
   explanationText: {fileID: 0}
   scoreText: {fileID: 2145856545}
   progressText: {fileID: 1916301585}
+  levelText: {fileID: 0}
   progressBar: {fileID: 161497482}
 --- !u!4 &1260933890
 Transform:
@@ -55169,7 +55189,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 909722267
-  m_SortingLayer: -1
+  m_SortingLayer: -2
   m_SortingOrder: 4
   m_MaskInteraction: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
@@ -59863,7 +59883,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 909722267
-  m_SortingLayer: -1
+  m_SortingLayer: -2
   m_SortingOrder: 1
   m_MaskInteraction: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
@@ -61358,7 +61378,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 909722267
-  m_SortingLayer: -1
+  m_SortingLayer: -2
   m_SortingOrder: 5
   m_MaskInteraction: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
@@ -62050,6 +62070,28 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7255318118803066289, guid: 9d5381dcf6836c64d8ae35c680c7dfec, type: 3}
   m_PrefabInstance: {fileID: 1566201735}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1574933304 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6846584451881266002, guid: 19b36d2c74a56ab49b3d3bbe231fe99a, type: 3}
+  m_PrefabInstance: {fileID: 1180720168}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1574933309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1574933304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 784b4809c2ca00d49a2b50ac93f8f3f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AssetInteraction
+  player: {fileID: 33073583}
+  alreadySelected: 0
+  assetName: ResidentialHouse
+  explanation: This asset is generally privately managed.
+  councilOwned: 0
 --- !u!1 &1622875489
 GameObject:
   m_ObjectHideFlags: 0
