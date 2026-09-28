@@ -83,28 +83,44 @@ public class PlayerController : MonoBehaviour
 	private void TryInteract()
 	{
 		Collider2D[] objects =
-			Physics2D.OverlapCircleAll(
-				transform.position,
-				interactionRadius
-			);
+			Physics2D.OverlapCircleAll(transform.position, interactionRadius);
 
 		Debug.Log("Checking for nearby assets...");
 
+		AssetInteraction closestAsset = null;
+		float closestDistance = Mathf.Infinity;
+
 		foreach (Collider2D obj in objects)
 		{
-			AssetInteraction asset =
-				obj.GetComponent<AssetInteraction>();
+			AssetInteraction asset = obj.GetComponent<AssetInteraction>();
 
-			if (asset != null)
+			if (asset == null)
+				continue;
+
+			// Ignore assets that have already been completed
+			if (asset.alreadySelected)
+				continue;
+
+			float distance =
+				Vector2.Distance(transform.position, asset.transform.position);
+
+			// Keep only the closest asset
+			if (distance < closestDistance)
 			{
-				Debug.Log("ASSET FOUND: " + asset.assetName);
-
-				asset.SelectAsset();
-				return;
+				closestDistance = distance;
+				closestAsset = asset;
 			}
 		}
 
-		Debug.Log("NO ASSET NEARBY!");
+		if (closestAsset != null)
+		{
+			Debug.Log("CLOSEST ASSET: " + closestAsset.assetName);
+			closestAsset.SelectAsset();
+		}
+		else
+		{
+			Debug.Log("NO AVAILABLE ASSET NEARBY!");
+		}
 	}
 
 	private void OnDrawGizmosSelected()
