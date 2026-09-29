@@ -165,8 +165,8 @@ public class PlayerController : MonoBehaviour
 			{
 				Debug.Log("ASSET FOUND: " + asset.assetName);
 
-				asset.SelectAsset();
-				return;
+				if (asset.SelectAsset())
+					return;
 			}
 		}
 

@@ -16,13 +16,13 @@ public class AssetInteraction : MonoBehaviour, IPointerClickHandler
 
 	public bool councilOwned = true;
 
-	public void SelectAsset()
+	public bool SelectAsset()
 	{
 		// Stop the same asset from being selected again
 		if (alreadySelected)
 		{
 			Debug.Log(this.name + " has already been completed.");
-			return;
+			return false;
 		}
 
 		// Mark this asset as selected
@@ -32,6 +32,7 @@ public class AssetInteraction : MonoBehaviour, IPointerClickHandler
 		GameManager.Instance.OpenAssetQuestion(this);
 
 		Debug.Log(this.name + " has been selected.");
+		return true;
 	}
 
 	public void OnPointerClick(PointerEventData eventData)
