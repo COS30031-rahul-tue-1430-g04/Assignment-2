@@ -868,6 +868,16 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6846584451881266002, guid: 72d170407106e8944ab9e1b8a2db9251, type: 3}
   m_PrefabInstance: {fileID: 1978119817}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &132263220 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4061649796835817683, guid: ee3651851d1e173418375115c94eb7b1, type: 3}
+  m_PrefabInstance: {fileID: 1338182708}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &132263221 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6455603496354775224, guid: ee3651851d1e173418375115c94eb7b1, type: 3}
+  m_PrefabInstance: {fileID: 1338182708}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &133361236
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26881,6 +26891,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AssetInteraction
   player: {fileID: 0}
+  star: {fileID: 0}
   alreadySelected: 0
   assetName: Fence
   explanation: This asset is generally managed by the council.
@@ -27214,6 +27225,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AssetInteraction
   player: {fileID: 928914012}
+  star: {fileID: 0}
   alreadySelected: 0
   assetName: Tree
   explanation: This asset is generally managed by the council.
@@ -27373,6 +27385,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AssetInteraction
   player: {fileID: 928914012}
+  star: {fileID: 0}
   alreadySelected: 0
   assetName: ResidentialHouse
   explanation: This asset is generally privately managed.
@@ -27487,7 +27500,7 @@ MonoBehaviour:
   m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
-  m_ApplyToSortingLayers: 000000009b423936976f4406
+  m_ApplyToSortingLayers: 000000009b423936976f4406af5ccb76
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -31699,6 +31712,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AssetInteraction
   player: {fileID: 928914012}
+  star: {fileID: 0}
   alreadySelected: 0
   assetName: Tree
   explanation: This asset is generally managed by the council.
@@ -36026,6 +36040,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AssetInteraction
   player: {fileID: 928914012}
+  star: {fileID: 0}
   alreadySelected: 0
   assetName: Chair
   explanation: This asset is generally managed by the council.
@@ -36399,6 +36414,63 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!1001 &1338182708
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1849275456}
+    m_Modifications:
+    - target: {fileID: 4061649796835817683, guid: ee3651851d1e173418375115c94eb7b1, type: 3}
+      propertyPath: m_Name
+      value: star container
+      objectReference: {fileID: 0}
+    - target: {fileID: 6455603496354775224, guid: ee3651851d1e173418375115c94eb7b1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6455603496354775224, guid: ee3651851d1e173418375115c94eb7b1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6455603496354775224, guid: ee3651851d1e173418375115c94eb7b1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6455603496354775224, guid: ee3651851d1e173418375115c94eb7b1, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6455603496354775224, guid: ee3651851d1e173418375115c94eb7b1, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6455603496354775224, guid: ee3651851d1e173418375115c94eb7b1, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6455603496354775224, guid: ee3651851d1e173418375115c94eb7b1, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6455603496354775224, guid: ee3651851d1e173418375115c94eb7b1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6455603496354775224, guid: ee3651851d1e173418375115c94eb7b1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6455603496354775224, guid: ee3651851d1e173418375115c94eb7b1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ee3651851d1e173418375115c94eb7b1, type: 3}
 --- !u!1001 &1355593523
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -297751,6 +297823,9 @@ PrefabInstance:
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 7255318118803066289, guid: 19b36d2c74a56ab49b3d3bbe231fe99a, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 132263221}
+    - targetCorrespondingSourceObject: {fileID: 7255318118803066289, guid: 19b36d2c74a56ab49b3d3bbe231fe99a, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 754751274}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6846584451881266002, guid: 19b36d2c74a56ab49b3d3bbe231fe99a, type: 3}
@@ -297775,6 +297850,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AssetInteraction
   player: {fileID: 928914012}
+  star: {fileID: 132263220}
   alreadySelected: 0
   assetName: ResidentialHouse
   explanation: This asset is generally privately managed.
@@ -298806,6 +298882,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AssetInteraction
   player: {fileID: 928914012}
+  star: {fileID: 0}
   alreadySelected: 0
   assetName: Fence
   explanation: This asset is generally privately managed.
@@ -299800,6 +299877,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AssetInteraction
   player: {fileID: 928914012}
+  star: {fileID: 0}
   alreadySelected: 0
   assetName: Chair
   explanation: This asset is generally managed by the council.
@@ -299927,6 +300005,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AssetInteraction
   player: {fileID: 928914012}
+  star: {fileID: 0}
   alreadySelected: 0
   assetName: Sign
   explanation: This asset is generally managed by the council.

@@ -4,8 +4,11 @@ using UnityEngine.EventSystems;
 public class AssetInteraction : MonoBehaviour, IPointerClickHandler
 {
 	public GameObject player;
+	public GameObject star = null;
+
 
 	public bool alreadySelected = false;
+
 
 	[Header("Asset Information")]
 	public string assetName = "Test Asset";
@@ -27,6 +30,11 @@ public class AssetInteraction : MonoBehaviour, IPointerClickHandler
 
 		// Mark this asset as selected
 		alreadySelected = true;
+
+		if (star != null)
+		{
+			star.SetActive(false);
+		}
 
 		// Open the question
 		GameManager.Instance.OpenAssetQuestion(this);

@@ -6967,6 +6967,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AssetInteraction
   player: {fileID: 33073583}
+  star: {fileID: 0}
   alreadySelected: 0
   assetName: Tree
   explanation: This asset is generally managed by the council.
@@ -9674,7 +9675,7 @@ MonoBehaviour:
   m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
-  m_ApplyToSortingLayers: 000000009b423936976f4406
+  m_ApplyToSortingLayers: 000000009b423936976f4406af5ccb76
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -10576,6 +10577,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AssetInteraction
   player: {fileID: 33073583}
+  star: {fileID: 0}
   alreadySelected: 0
   assetName: Chair
   explanation: This asset is generally managed by the council.
@@ -12578,6 +12580,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AssetInteraction
   player: {fileID: 33073583}
+  star: {fileID: 0}
   alreadySelected: 0
   assetName: Chair
   explanation: This asset is generally managed by the council.
@@ -58078,6 +58081,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AssetInteraction
   player: {fileID: 33073583}
+  star: {fileID: 0}
   alreadySelected: 0
   assetName: Street Light
   explanation: This asset is generally managed by the council.
@@ -218308,6 +218312,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1260933890}
   - component: {fileID: 1260933889}
+  - component: {fileID: 1260933891}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -218357,6 +218362,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1260933891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1260933888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0473a4ef0d1ae54d949baf6dba64ecd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelTransitionManager
+  levelCompletePanel: {fileID: 0}
+  backgroundOverlay: {fileID: 0}
+  panelTransform: {fileID: 0}
+  audioSource: {fileID: 0}
+  levelCompleteClip: {fileID: 0}
+  fadeDuration: 0.5
 --- !u!1001 &1264697527
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -219374,6 +219397,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AssetInteraction
   player: {fileID: 33073583}
+  star: {fileID: 0}
   alreadySelected: 0
   assetName: Residential House
   explanation: This asset is generally privately managed
@@ -219411,6 +219435,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AssetInteraction
   player: {fileID: 33073583}
+  star: {fileID: 0}
   alreadySelected: 0
   assetName: Sign
   explanation: This asset is generally managed by the council.
@@ -220794,6 +220819,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AssetInteraction
   player: {fileID: 33073583}
+  star: {fileID: 0}
   alreadySelected: 0
   assetName: Stand
   explanation: This asset is generally managed by the council.
@@ -267579,6 +267605,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AssetInteraction
   player: {fileID: 33073583}
+  star: {fileID: 0}
   alreadySelected: 0
   assetName: Residential House
   explanation: This asset is generally privately managed.
