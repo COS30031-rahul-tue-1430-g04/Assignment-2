@@ -2,6 +2,7 @@
 using TMPro;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(LevelTransitionManager))]
 public class GameManager : MonoBehaviour
 {
 	public static GameManager Instance;
@@ -32,11 +33,13 @@ public class GameManager : MonoBehaviour
 	public Slider progressBar;
 
 	private AssetInteraction currentAsset;
+	private LevelTransitionManager levelManager;
 
 	private void Awake()
 	{
 		Instance = this;
-	}
+        levelManager = GetComponent<LevelTransitionManager>();
+    }
 
 	private void Start()
 	{
@@ -170,20 +173,8 @@ public class GameManager : MonoBehaviour
 		// Check whether level is complete
 		if (completedAssets >= totalAssets)
 		{
-			LevelComplete();
-		}
-	}
-
-	// =========================================================
-	// LEVEL COMPLETE
-	// =========================================================
-
-	private void LevelComplete()
-	{
-		Debug.Log("LEVEL COMPLETE!");
-
-		if (levelCompletePanel != null)
-			levelCompletePanel.SetActive(true);
+			levelManager.ShowLevelComplete();
+        }
 	}
 
 	// =========================================================
