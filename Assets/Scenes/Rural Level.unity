@@ -32112,6 +32112,7 @@ GameObject:
   - component: {fileID: 1295737894}
   - component: {fileID: 1295737893}
   - component: {fileID: 1295737892}
+  - component: {fileID: 1295737897}
   m_Layer: 8
   m_Name: LongGrass
   m_TagString: Untagged
@@ -35672,6 +35673,20 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!114 &1295737897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1295737890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3182689623683e844917fb17ac26314e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TerrainZone
+  speedMultiplier: 0.5
+  isWater: 0
 --- !u!1001 &1296751094
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -300317,6 +300332,10 @@ PrefabInstance:
       propertyPath: levelCompletePanel
       value: 
       objectReference: {fileID: 465409074}
+    - target: {fileID: 6385597940105710971, guid: 65858a2794e5e5e47ad3c582261d38db, type: 3}
+      propertyPath: m_Resource
+      value: 
+      objectReference: {fileID: 8300000, guid: 65738ef3acb7e034fa6d484ccbd5eb97, type: 3}
     - target: {fileID: 9048379127404631552, guid: 65858a2794e5e5e47ad3c582261d38db, type: 3}
       propertyPath: m_LocalPosition.x
       value: 80.73921
