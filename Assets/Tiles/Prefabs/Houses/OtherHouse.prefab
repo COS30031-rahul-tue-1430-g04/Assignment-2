@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2618680030732028307}
   - component: {fileID: 8439968842298996915}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: OtherHouse
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -89,7 +89,7 @@ GameObject:
   m_Component:
   - component: {fileID: 771351494287152536}
   - component: {fileID: 2988676454651548770}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
