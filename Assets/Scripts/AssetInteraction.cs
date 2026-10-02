@@ -1,7 +1,15 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class AssetInteraction : MonoBehaviour
+public class AssetInteraction : MonoBehaviour, IPointerClickHandler
 {
+	public GameObject player;
+	public GameObject star = null;
+
+
+	public bool alreadySelected = false;
+
+
 	[Header("Asset Information")]
 	public string assetName = "Test Asset";
 
@@ -11,31 +19,50 @@ public class AssetInteraction : MonoBehaviour
 
 	public bool councilOwned = true;
 
-	private bool playerNearby;
-
-	private void OnTriggerEnter2D(Collider2D other)
+	public bool SelectAsset()
 	{
-		if (other.CompareTag("Player"))
+		// Stop the same asset from being selected again
+		if (alreadySelected)
 		{
-			playerNearby = true;
+			Debug.Log(name + " has already been completed.");
+			return false;
 		}
-	}
 
-	private void OnTriggerExit2D(Collider2D other)
-	{
-		if (other.CompareTag("Player"))
+		// Mark this asset as selected
+		alreadySelected = true;
+
+		if (star != null)
 		{
-			playerNearby = false;
+			star.SetActive(false);
 		}
-	}
 
-	public bool IsPlayerNearby()
-	{
-		return playerNearby;
-	}
-
-	public void SelectAsset()
-	{
+		// Open the question
 		GameManager.Instance.OpenAssetQuestion(this);
+
+		Debug.Log(name + " has been selected.");
+		return true;
+	}
+
+	public void OnPointerClick(PointerEventData eventData)
+	{
+		Debug.Log(name + " has been clicked.");
+
+		if (player != null && PlayerwithinRange(7))
+		{
+			SelectAsset();
+		}
+	}
+
+	private bool PlayerwithinRange(int range)
+	{
+		if (player == null)
+			return false;
+
+		Vector3 playerv = player.transform.position;
+
+		float distance =
+			Vector2.Distance(playerv, transform.position);
+
+		return distance < range;
 	}
 }

@@ -2,6 +2,7 @@
 using TMPro;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(LevelTransitionManager))]
 public class GameManager : MonoBehaviour
 {
 	public static GameManager Instance;
@@ -10,50 +11,78 @@ public class GameManager : MonoBehaviour
 	public int score = 0;
 	public int completedAssets = 0;
 	public int totalAssets = 8;
+	public int currentLevel = 1;
 
 	[Header("UI")]
 	public GameObject interactionPanel;
 	public GameObject feedbackPanel;
 	public GameObject levelCompletePanel;
 
+	[Header("Interaction UI")]
 	public TMP_Text assetNameText;
 	public TMP_Text questionText;
 
+	[Header("Feedback UI")]
 	public TMP_Text feedbackText;
 	public TMP_Text explanationText;
 
+	[Header("HUD")]
 	public TMP_Text scoreText;
 	public TMP_Text progressText;
-
+	public TMP_Text levelText;
 	public Slider progressBar;
 
 	private AssetInteraction currentAsset;
+	private LevelTransitionManager levelManager;
 
 	private void Awake()
 	{
 		Instance = this;
-	}
+        levelManager = GetComponent<LevelTransitionManager>();
+    }
 
 	private void Start()
 	{
-		interactionPanel.SetActive(false);
-		/*feedbackPanel.SetActive(false);
-		levelCompletePanel.SetActive(false);*/
+		// Initial UI state
+		if (interactionPanel != null)
+			interactionPanel.SetActive(false);
+
+		if (feedbackPanel != null)
+			feedbackPanel.SetActive(false);
+
+		if (levelCompletePanel != null)
+			levelCompletePanel.SetActive(false);
 
 		UpdateHUD();
 	}
 
+	// =========================================================
+	// ASSET INTERACTION
+	// =========================================================
+
 	public void OpenAssetQuestion(AssetInteraction asset)
 	{
+		if (asset == null)
+			return;
+
 		currentAsset = asset;
 
-		interactionPanel.SetActive(true);
+		if (interactionPanel != null)
+			interactionPanel.SetActive(true);
 
-		assetNameText.text = asset.assetName;
+		if (assetNameText != null)
+			assetNameText.text = asset.assetName;
 
-		questionText.text =
-			"Who generally looks after this?";
+		if (questionText != null)
+		{
+			questionText.text =
+				"Who generally looks after this?";
+		}
 	}
+
+	// =========================================================
+	// ANSWER BUTTONS
+	// =========================================================
 
 	public void ChooseCouncil()
 	{
@@ -65,56 +94,115 @@ public class GameManager : MonoBehaviour
 		CheckAnswer(false);
 	}
 
+	// =========================================================
+	// CHECK ANSWER
+	// =========================================================
+
 	private void CheckAnswer(bool councilAnswer)
 	{
+		if (currentAsset == null)
+		{
+			Debug.LogWarning("No asset is currently selected.");
+			return;
+		}
+
 		bool correct =
 			councilAnswer == currentAsset.councilOwned;
 
-		interactionPanel.SetActive(false);
+		// Hide interaction panel
+		if (interactionPanel != null)
+			interactionPanel.SetActive(false);
 
-		feedbackPanel.SetActive(true);
+		// Show feedback panel
+		if (feedbackPanel != null)
+			feedbackPanel.SetActive(true);
 
 		if (correct)
 		{
-			score += 100;
-			completedAssets++;
+			Debug.Log("Correct!");
 
-			feedbackText.text = "✓ Correct!";
+			score += 100;
+
+			feedbackText.text = "CORRECT!";
 		}
 		else
 		{
+			Debug.Log("Incorrect!");
+
 			score -= 50;
 
-			completedAssets++;
-
-			feedbackText.text = "✗ Incorrect";
+			feedbackText.text = "NOT QUITE";
 		}
 
-		explanationText.text =
-			currentAsset.explanation;
+		// Every answered asset counts as completed
+		completedAssets++;
 
+		// Show explanation
+		if (explanationText != null)
+		{
+			explanationText.text =
+				currentAsset.explanation;
+		}
+
+		// Update HUD
 		UpdateHUD();
+
+		Debug.Log(
+			"Assets completed: " +
+			completedAssets +
+			"/" +
+			totalAssets
+		);
 	}
 
-	public void Continue()
-	{
-		feedbackPanel.SetActive(false);
+	// =========================================================
+	// CONTINUE BUTTON
+	// =========================================================
 
+	public void ContinueAfterFeedback()
+	{
+		Debug.Log("Continue button pressed.");
+
+		// Hide feedback
+		if (feedbackPanel != null)
+			feedbackPanel.SetActive(false);
+
+		// Clear current asset
+		currentAsset = null;
+
+		// Check whether level is complete
 		if (completedAssets >= totalAssets)
 		{
-			LevelComplete();
-		}
+			levelManager.ShowLevelComplete();
+        }
 	}
+
+	// =========================================================
+	// HUD
+	// =========================================================
 
 	private void UpdateHUD()
 	{
-		scoreText.text = "Score: " + score;
+		if (scoreText != null)
+		{
+			scoreText.text =
+				"Score: " + score;
+		}
 
-		progressText.text =
-			"Assets Found: " +
-			completedAssets +
-			"/" +
-			totalAssets;
+		if (progressText != null)
+		{
+			progressText.text =
+				"Assets Found: " +
+				completedAssets +
+				"/" +
+				totalAssets;
+		}
+
+		if (levelText != null)
+		{
+			levelText.text =
+				"Level " + currentLevel;
+		}
 
 		if (progressBar != null)
 		{
@@ -122,10 +210,5 @@ public class GameManager : MonoBehaviour
 				(float)completedAssets /
 				totalAssets;
 		}
-	}
-
-	private void LevelComplete()
-	{
-		levelCompletePanel.SetActive(true);
 	}
 }
