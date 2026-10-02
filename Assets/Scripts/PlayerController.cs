@@ -69,6 +69,23 @@ public class PlayerController : MonoBehaviour
 			interact.started += ctx => TryInteract();
 		}
 	}
+	void OnDestroy()
+	{
+		if (moveAction != null)
+		{
+			moveAction.performed -= UpdateMoveInput;
+			moveAction.canceled -= UpdateMoveInput;
+		}
+		if (sprint != null)
+		{
+			sprint.performed -= UpdateSprintInput;
+			sprint.canceled -= UpdateSprintInput;
+		}
+		if (interact != null)
+		{
+			interact.started -= ctx => TryInteract();
+		}
+	}
 	void UpdateMoveInput(InputAction.CallbackContext context)
 	{
 		moveInput = context.ReadValue<Vector2>();
@@ -165,8 +182,8 @@ public class PlayerController : MonoBehaviour
 			{
 				Debug.Log("ASSET FOUND: " + asset.assetName);
 
-				asset.SelectAsset();
-				return;
+				if (asset.SelectAsset())
+					return;
 			}
 		}
 

@@ -615528,6 +615528,7 @@ GameObject:
   - component: {fileID: 1884529513}
   - component: {fileID: 1884529512}
   - component: {fileID: 1884529511}
+  - component: {fileID: 1884529514}
   m_Layer: 8
   m_Name: LongGrass
   m_TagString: Untagged
@@ -618740,6 +618741,20 @@ TilemapCollider2D:
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0
   m_UseDelaunayMesh: 0
+--- !u!114 &1884529514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1884529507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3182689623683e844917fb17ac26314e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TerrainZone
+  speedMultiplier: 0.5
+  isWater: 0
 --- !u!4 &1895851384 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7255318118803066289, guid: ad192fad3d52bd244969a9040f945a0a, type: 3}

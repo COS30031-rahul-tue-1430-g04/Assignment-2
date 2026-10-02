@@ -19,13 +19,13 @@ public class AssetInteraction : MonoBehaviour, IPointerClickHandler
 
 	public bool councilOwned = true;
 
-	public void SelectAsset()
+	public bool SelectAsset()
 	{
 		// Stop the same asset from being selected again
 		if (alreadySelected)
 		{
-			Debug.Log(this.name + " has already been completed.");
-			return;
+			Debug.Log(name + " has already been completed.");
+			return false;
 		}
 
 		// Mark this asset as selected
@@ -39,20 +39,21 @@ public class AssetInteraction : MonoBehaviour, IPointerClickHandler
 		// Open the question
 		GameManager.Instance.OpenAssetQuestion(this);
 
-		Debug.Log(this.name + " has been selected.");
+		Debug.Log(name + " has been selected.");
+		return true;
 	}
 
 	public void OnPointerClick(PointerEventData eventData)
 	{
-		Debug.Log(this.name + " has been clicked.");
+		Debug.Log(name + " has been clicked.");
 
-		if (player != null && playerwithinRange(7))
+		if (player != null && PlayerwithinRange(7))
 		{
 			SelectAsset();
 		}
 	}
 
-	private bool playerwithinRange(int range)
+	private bool PlayerwithinRange(int range)
 	{
 		if (player == null)
 			return false;
@@ -60,7 +61,7 @@ public class AssetInteraction : MonoBehaviour, IPointerClickHandler
 		Vector3 playerv = player.transform.position;
 
 		float distance =
-			Vector2.Distance(playerv, this.transform.position);
+			Vector2.Distance(playerv, transform.position);
 
 		return distance < range;
 	}
