@@ -18,7 +18,7 @@ public class LevelTransitionManager : MonoBehaviour
 	public float fadeDuration = 0.5f;
 
 	[Header("End Game")]
-	public string endGameSceneName = "EndGame";
+	public string endGameSceneName = "EndGameMenu";
 
 	private bool levelCompleteShown = false;
 	private bool isTransitioning = false;
@@ -37,7 +37,6 @@ public class LevelTransitionManager : MonoBehaviour
 		if (backgroundOverlay != null)
 		{
 			backgroundOverlay.alpha = 1f;
-
 			StartCoroutine(FadeInFromBlack());
 		}
 	}
@@ -49,8 +48,8 @@ public class LevelTransitionManager : MonoBehaviour
 
 	private void Update()
 	{
-		// TEST KEY
-		// Press L to show Level Complete
+		// TEST:
+		// Press L to show the Level Complete panel.
 		if (Keyboard.current != null &&
 			Keyboard.current.lKey.wasPressedThisFrame &&
 			!levelCompleteShown &&
@@ -62,7 +61,7 @@ public class LevelTransitionManager : MonoBehaviour
 
 
 	// =========================================================
-	// FADE IN
+	// FADE IN FROM BLACK
 	// =========================================================
 
 	private IEnumerator FadeInFromBlack()
@@ -140,7 +139,6 @@ public class LevelTransitionManager : MonoBehaviour
 			float progress =
 				time / duration;
 
-
 			// Darken the map
 			if (backgroundOverlay != null)
 			{
@@ -151,7 +149,6 @@ public class LevelTransitionManager : MonoBehaviour
 						progress
 					);
 			}
-
 
 			// Animate panel
 			if (panelTransform != null)
@@ -174,13 +171,11 @@ public class LevelTransitionManager : MonoBehaviour
 			yield return null;
 		}
 
-
 		if (backgroundOverlay != null)
 			backgroundOverlay.alpha = 0.75f;
 
 		if (panelTransform != null)
-			panelTransform.localScale =
-				Vector3.one;
+			panelTransform.localScale = Vector3.one;
 	}
 
 
@@ -219,36 +214,83 @@ public class LevelTransitionManager : MonoBehaviour
 		int nextSceneIndex =
 			currentSceneIndex + 1;
 
-		string nextSceneName =
-			SceneUtility.GetScenePathByBuildIndex(nextSceneIndex);
 
-		// If the next scene is EndGame
-		if (nextSceneName.Contains(endGameSceneName))
+		// -----------------------------------------------------
+		// CHECK THAT A NEXT SCENE EXISTS
+		// -----------------------------------------------------
+
+		if (nextSceneIndex >=
+			SceneManager.sceneCountInBuildSettings)
 		{
-			Debug.Log("Final level completed. Loading EndGame.");
+			Debug.Log(
+				"No more scenes. Loading EndGameMenu."
+			);
 
 			isTransitioning = true;
 
-			StartCoroutine(FadeAndLoadEndGame());
+			StartCoroutine(
+				FadeAndLoadEndGame()
+			);
 
 			return;
 		}
 
-		// Otherwise load the next level
-		if (nextSceneIndex <
-			SceneManager.sceneCountInBuildSettings)
+
+		// -----------------------------------------------------
+		// GET NEXT SCENE NAME
+		// -----------------------------------------------------
+
+		string nextScenePath =
+			SceneUtility.GetScenePathByBuildIndex(
+				nextSceneIndex
+			);
+
+		string nextSceneName =
+			System.IO.Path.GetFileNameWithoutExtension(
+				nextScenePath
+			);
+
+
+		Debug.Log(
+			"Next scene: " +
+			nextSceneName
+		);
+
+
+		// -----------------------------------------------------
+		// IF NEXT SCENE IS END GAME
+		// -----------------------------------------------------
+
+		if (nextSceneName == endGameSceneName)
 		{
+			Debug.Log(
+				"Final level completed. Loading EndGameMenu."
+			);
+
 			isTransitioning = true;
 
 			StartCoroutine(
-				FadeAndLoad(nextSceneIndex)
+				FadeAndLoadEndGame()
 			);
+
+			return;
 		}
+
+
+		// -----------------------------------------------------
+		// LOAD NORMAL NEXT LEVEL
+		// -----------------------------------------------------
+
+		isTransitioning = true;
+
+		StartCoroutine(
+			FadeAndLoad(nextSceneIndex)
+		);
 	}
 
 
 	// =========================================================
-	// LOAD END GAME
+	// LOAD END GAME MENU
 	// =========================================================
 
 	private IEnumerator FadeAndLoadEndGame()
@@ -284,7 +326,7 @@ public class LevelTransitionManager : MonoBehaviour
 			backgroundOverlay.alpha = 1f;
 
 		Debug.Log(
-			"Loading EndGame scene."
+			"Loading EndGameMenu."
 		);
 
 		SceneManager.LoadScene(
@@ -297,8 +339,7 @@ public class LevelTransitionManager : MonoBehaviour
 	// FADE AND LOAD NORMAL LEVEL
 	// =========================================================
 
-	private IEnumerator FadeAndLoad(
-		int sceneIndex)
+	private IEnumerator FadeAndLoad(int sceneIndex)
 	{
 		float startAlpha = 0f;
 
@@ -330,8 +371,6 @@ public class LevelTransitionManager : MonoBehaviour
 		if (backgroundOverlay != null)
 			backgroundOverlay.alpha = 1f;
 
-		SceneManager.LoadScene(
-			sceneIndex
-		);
+		SceneManager.LoadScene(sceneIndex);
 	}
 }
