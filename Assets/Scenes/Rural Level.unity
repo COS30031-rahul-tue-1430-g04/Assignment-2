@@ -26717,8 +26717,8 @@ MonoBehaviour:
   star: {fileID: 1951326296}
   alreadySelected: 0
   assetName: Fence
-  explanation: This asset is generally managed by the council.
-  councilOwned: 1
+  explanation: This asset is generally privately managed.
+  councilOwned: 0
 --- !u!1001 &1004755120
 PrefabInstance:
   m_ObjectHideFlags: 0
