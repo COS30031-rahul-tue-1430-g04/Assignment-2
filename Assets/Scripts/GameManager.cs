@@ -12,6 +12,10 @@ public class GameManager : MonoBehaviour
 	// =========================================================
 
 	[Header("Game Settings")]
+	
+	[Header("Detected Assets")]
+	[SerializeField]
+	private AssetInteraction[] detectedAssets;
 
 	[HideInInspector]
 	public int totalAssets = 0;
@@ -177,12 +181,13 @@ public class GameManager : MonoBehaviour
 
 	private void CountAssets()
 	{
-		AssetInteraction[] assets =
+		detectedAssets =
 			FindObjectsByType<AssetInteraction>(
+				FindObjectsInactive.Include,
 				FindObjectsSortMode.None
 			);
 
-		totalAssets = assets.Length;
+		totalAssets = detectedAssets.Length;
 
 		Debug.Log(
 			"Total assets found in Level " +
@@ -190,6 +195,16 @@ public class GameManager : MonoBehaviour
 			": " +
 			totalAssets
 		);
+
+		foreach (AssetInteraction asset in detectedAssets)
+		{
+			Debug.Log(
+				"Asset Found: " +
+				asset.gameObject.name +
+				" | Asset Name: " +
+				asset.assetName
+			);
+		}
 	}
 
 

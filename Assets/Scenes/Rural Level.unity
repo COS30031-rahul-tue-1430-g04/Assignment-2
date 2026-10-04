@@ -296316,6 +296316,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a51ad75ed016ef478dd66f63eea4b4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  detectedAssets: []
   totalAssets: 8
   currentLevel: 1
   assetsExplored: 0
@@ -299918,6 +299919,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1072713923}
     m_Modifications:
+    - target: {fileID: 3479006066397422509, guid: bfaf779a5faa05244ad4c280ee4b581a, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3479006066397422509, guid: bfaf779a5faa05244ad4c280ee4b581a, type: 3}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3479006066397422509, guid: bfaf779a5faa05244ad4c280ee4b581a, type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4621722242926131764, guid: bfaf779a5faa05244ad4c280ee4b581a, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

@@ -9,14 +9,14 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: 479be2df32e9aaa4aa5588d542b35b6a
   - enabled: 1
-    path: Assets/Scenes/CommunityPrecinct.unity
-    guid: 8c9cfa26abfee488c85f1582747f6a02
+    path: Assets/Scenes/Rural Level.unity
+    guid: 08eec2193b56d09439386c464346b6a5
   - enabled: 1
     path: Assets/Scenes/Suburban Level.unity
     guid: 79ae22481e3ab5449a01fac9f9587ac9
   - enabled: 1
-    path: Assets/Scenes/Rural Level.unity
-    guid: 08eec2193b56d09439386c464346b6a5
+    path: Assets/Scenes/CommunityPrecinct.unity
+    guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 1
     path: Assets/Scenes/EndGameMenu.unity
     guid: 569567c8ceca0b34f8716e0c5e055428
