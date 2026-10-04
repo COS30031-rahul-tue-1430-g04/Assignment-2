@@ -5,170 +5,333 @@ using System.Collections;
 
 public class LevelTransitionManager : MonoBehaviour
 {
-    [Header("Level Complete UI")]
-    public GameObject levelCompletePanel;
-    public CanvasGroup backgroundOverlay;
-    public RectTransform panelTransform;
+	[Header("Level Complete UI")]
+	public GameObject levelCompletePanel;
+	public CanvasGroup backgroundOverlay;
+	public RectTransform panelTransform;
 
-    [Header("Sound")]
-    public AudioSource audioSource;
-    public AudioClip levelCompleteClip;
+	[Header("Sound")]
+	public AudioSource audioSource;
+	public AudioClip levelCompleteClip;
 
-    [Header("Fade Settings")]
-    public float fadeDuration = 0.5f;
+	[Header("Fade Settings")]
+	public float fadeDuration = 0.5f;
 
-    private bool levelCompleteShown = false;
-    private bool isTransitioning = false;
+	[Header("End Game")]
+	public string endGameSceneName = "EndGame";
 
-    void Start()
-    {
-        levelCompletePanel.SetActive(false);
+	private bool levelCompleteShown = false;
+	private bool isTransitioning = false;
 
-        // Scene starts dark and fades in
-        backgroundOverlay.alpha = 1f;
-        StartCoroutine(FadeInFromBlack());
-    }
 
-    void Update()
-    {
-        if (Keyboard.current.lKey.wasPressedThisFrame &&
-            !levelCompleteShown &&
-            !isTransitioning)
-        {
-            ShowLevelComplete();
-        }
-    }
+	// =========================================================
+	// START
+	// =========================================================
 
-    private IEnumerator FadeInFromBlack()
-    {
-        float time = 0f;
+	private void Start()
+	{
+		if (levelCompletePanel != null)
+			levelCompletePanel.SetActive(false);
 
-        while (time < fadeDuration)
-        {
-            time += Time.deltaTime;
+		// Start scene dark
+		if (backgroundOverlay != null)
+		{
+			backgroundOverlay.alpha = 1f;
 
-            float progress = time / fadeDuration;
+			StartCoroutine(FadeInFromBlack());
+		}
+	}
 
-            backgroundOverlay.alpha = Mathf.Lerp(1f, 0f, progress);
 
-            yield return null;
-        }
+	// =========================================================
+	// UPDATE
+	// =========================================================
 
-        backgroundOverlay.alpha = 0f;
-    }
+	private void Update()
+	{
+		// TEST KEY
+		// Press L to show Level Complete
+		if (Keyboard.current != null &&
+			Keyboard.current.lKey.wasPressedThisFrame &&
+			!levelCompleteShown &&
+			!isTransitioning)
+		{
+			ShowLevelComplete();
+		}
+	}
 
-    public void ShowLevelComplete()
-    {
-        if (levelCompleteShown)
-            return;
 
-        levelCompleteShown = true;
+	// =========================================================
+	// FADE IN
+	// =========================================================
 
-        levelCompletePanel.SetActive(true);
+	private IEnumerator FadeInFromBlack()
+	{
+		float time = 0f;
 
-        panelTransform.localScale = Vector3.zero;
+		while (time < fadeDuration)
+		{
+			time += Time.deltaTime;
 
-        if (audioSource != null && levelCompleteClip != null)
-        {
-            audioSource.PlayOneShot(levelCompleteClip);
-        }
+			float progress =
+				time / fadeDuration;
 
-        StartCoroutine(AnimateLevelComplete());
-    }
+			if (backgroundOverlay != null)
+			{
+				backgroundOverlay.alpha =
+					Mathf.Lerp(1f, 0f, progress);
+			}
 
-    private IEnumerator AnimateLevelComplete()
-    {
-        
-        float duration = 1.5f; //don't change - alignes perfectly with soundtrack
-        float time = 0f;
+			yield return null;
+		}
 
-        while (time < duration)
-        {
-            time += Time.deltaTime;
+		if (backgroundOverlay != null)
+			backgroundOverlay.alpha = 0f;
+	}
 
-            float progress = time / duration;
 
-            // darkens the map
-            backgroundOverlay.alpha =
-                Mathf.Lerp(0f, 0.75f, progress);
+	// =========================================================
+	// SHOW LEVEL COMPLETE
+	// =========================================================
 
-            float scale =
-                Mathf.Lerp(0.8f, 1f, progress);
+	public void ShowLevelComplete()
+	{
+		if (levelCompleteShown)
+			return;
 
-            panelTransform.localScale =
-                new Vector3(scale, scale, 1f);
+		if (isTransitioning)
+			return;
 
-            yield return null;
-        }
+		levelCompleteShown = true;
 
-        backgroundOverlay.alpha = 0.75f;
-        panelTransform.localScale = Vector3.one;
-    }
+		if (levelCompletePanel != null)
+			levelCompletePanel.SetActive(true);
 
-    public void RestartLevel()
-    {
-        if (isTransitioning)
-            return;
+		if (panelTransform != null)
+			panelTransform.localScale = Vector3.zero;
 
-        isTransitioning = true;
+		// Play level complete sound
+		if (audioSource != null &&
+			levelCompleteClip != null)
+		{
+			audioSource.PlayOneShot(levelCompleteClip);
+		}
 
-        StartCoroutine(FadeAndLoad(
-            SceneManager.GetActiveScene().buildIndex
-        ));
-    }
+		StartCoroutine(AnimateLevelComplete());
+	}
 
-    public void LoadNextLevel()
-    {
-        if (isTransitioning)
-            return;
 
-        int currentSceneIndex =
-            SceneManager.GetActiveScene().buildIndex;
+	// =========================================================
+	// LEVEL COMPLETE ANIMATION
+	// =========================================================
 
-        int nextSceneIndex =
-            currentSceneIndex + 1;
+	private IEnumerator AnimateLevelComplete()
+	{
+		// Keep this at 1.5 seconds
+		// because it is aligned with your soundtrack.
+		float duration = 1.5f;
 
-        if (nextSceneIndex <
-            SceneManager.sceneCountInBuildSettings)
-        {
-            isTransitioning = true;
+		float time = 0f;
 
-            StartCoroutine(FadeAndLoad(nextSceneIndex));
-        }
-        else
-        {
-            UnityEngine.Debug.Log(
-                "No more levels available."
-            );
-        }
-    }
+		while (time < duration)
+		{
+			time += Time.deltaTime;
 
-    private IEnumerator FadeAndLoad(int sceneIndex)
-    {
-        float startAlpha = backgroundOverlay.alpha;
-        float time = 0f;
+			float progress =
+				time / duration;
 
-        while (time < fadeDuration)
-        {
-            time += Time.deltaTime;
 
-            float progress = time / fadeDuration;
+			// Darken the map
+			if (backgroundOverlay != null)
+			{
+				backgroundOverlay.alpha =
+					Mathf.Lerp(
+						0f,
+						0.75f,
+						progress
+					);
+			}
 
-            backgroundOverlay.alpha =
-                Mathf.Lerp(startAlpha, 1f, progress);
 
-            yield return null;
-        }
+			// Animate panel
+			if (panelTransform != null)
+			{
+				float scale =
+					Mathf.Lerp(
+						0.8f,
+						1f,
+						progress
+					);
 
-        backgroundOverlay.alpha = 1f;
+				panelTransform.localScale =
+					new Vector3(
+						scale,
+						scale,
+						1f
+					);
+			}
 
-        SceneManager.LoadScene(sceneIndex);
-    }
+			yield return null;
+		}
+
+
+		if (backgroundOverlay != null)
+			backgroundOverlay.alpha = 0.75f;
+
+		if (panelTransform != null)
+			panelTransform.localScale =
+				Vector3.one;
+	}
+
+
+	// =========================================================
+	// RESTART CURRENT LEVEL
+	// =========================================================
+
+	public void RestartLevel()
+	{
+		if (isTransitioning)
+			return;
+
+		isTransitioning = true;
+
+		int currentSceneIndex =
+			SceneManager.GetActiveScene().buildIndex;
+
+		StartCoroutine(
+			FadeAndLoad(currentSceneIndex)
+		);
+	}
+
+
+	// =========================================================
+	// LOAD NEXT LEVEL
+	// =========================================================
+
+	public void LoadNextLevel()
+	{
+		if (isTransitioning)
+			return;
+
+		int currentSceneIndex =
+			SceneManager.GetActiveScene().buildIndex;
+
+		int nextSceneIndex =
+			currentSceneIndex + 1;
+
+		string nextSceneName =
+			SceneUtility.GetScenePathByBuildIndex(nextSceneIndex);
+
+		// If the next scene is EndGame
+		if (nextSceneName.Contains(endGameSceneName))
+		{
+			Debug.Log("Final level completed. Loading EndGame.");
+
+			isTransitioning = true;
+
+			StartCoroutine(FadeAndLoadEndGame());
+
+			return;
+		}
+
+		// Otherwise load the next level
+		if (nextSceneIndex <
+			SceneManager.sceneCountInBuildSettings)
+		{
+			isTransitioning = true;
+
+			StartCoroutine(
+				FadeAndLoad(nextSceneIndex)
+			);
+		}
+	}
+
+
+	// =========================================================
+	// LOAD END GAME
+	// =========================================================
+
+	private IEnumerator FadeAndLoadEndGame()
+	{
+		float startAlpha = 0f;
+
+		if (backgroundOverlay != null)
+			startAlpha = backgroundOverlay.alpha;
+
+		float time = 0f;
+
+		while (time < fadeDuration)
+		{
+			time += Time.deltaTime;
+
+			float progress =
+				time / fadeDuration;
+
+			if (backgroundOverlay != null)
+			{
+				backgroundOverlay.alpha =
+					Mathf.Lerp(
+						startAlpha,
+						1f,
+						progress
+					);
+			}
+
+			yield return null;
+		}
+
+		if (backgroundOverlay != null)
+			backgroundOverlay.alpha = 1f;
+
+		Debug.Log(
+			"Loading EndGame scene."
+		);
+
+		SceneManager.LoadScene(
+			endGameSceneName
+		);
+	}
+
+
+	// =========================================================
+	// FADE AND LOAD NORMAL LEVEL
+	// =========================================================
+
+	private IEnumerator FadeAndLoad(
+		int sceneIndex)
+	{
+		float startAlpha = 0f;
+
+		if (backgroundOverlay != null)
+			startAlpha = backgroundOverlay.alpha;
+
+		float time = 0f;
+
+		while (time < fadeDuration)
+		{
+			time += Time.deltaTime;
+
+			float progress =
+				time / fadeDuration;
+
+			if (backgroundOverlay != null)
+			{
+				backgroundOverlay.alpha =
+					Mathf.Lerp(
+						startAlpha,
+						1f,
+						progress
+					);
+			}
+
+			yield return null;
+		}
+
+		if (backgroundOverlay != null)
+			backgroundOverlay.alpha = 1f;
+
+		SceneManager.LoadScene(
+			sceneIndex
+		);
+	}
 }
-
-/*
-level transition complete
-some minor UI changes:
-- colours are horrible
-- sounds for buttonclicking, level start (maybe along with fade-in), level end (maybe along with fade out),...
-*/

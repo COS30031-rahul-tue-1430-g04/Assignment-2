@@ -296690,10 +296690,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a51ad75ed016ef478dd66f63eea4b4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  score: 0
-  completedAssets: 0
   totalAssets: 8
   currentLevel: 1
+  assetsExplored: 0
+  assetsAnswered: 0
   interactionPanel: {fileID: 1454682752}
   feedbackPanel: {fileID: 1296751098}
   levelCompletePanel: {fileID: 465409074}
@@ -296835,6 +296835,7 @@ MonoBehaviour:
   audioSource: {fileID: 1688869826}
   levelCompleteClip: {fileID: 8300000, guid: 65738ef3acb7e034fa6d484ccbd5eb97, type: 3}
   fadeDuration: 0.5
+  endGameSceneName: EndGame
 --- !u!1001 &1691485087
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -300417,7 +300418,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2271581706198124519, guid: 139c8d6a8ba75114091d6d2a85d886f3, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 600
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 2271581706198124519, guid: 139c8d6a8ba75114091d6d2a85d886f3, type: 3}
       propertyPath: m_SizeDelta.y
@@ -300475,9 +300476,27 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5678399281036033802, guid: 139c8d6a8ba75114091d6d2a85d886f3, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 5678399281036033802, guid: 139c8d6a8ba75114091d6d2a85d886f3, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 350
+      objectReference: {fileID: 0}
     - target: {fileID: 7357644530317595255, guid: 139c8d6a8ba75114091d6d2a85d886f3, type: 3}
       propertyPath: m_Interactable
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8522900882491393350, guid: 139c8d6a8ba75114091d6d2a85d886f3, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 8741450277635156666, guid: 139c8d6a8ba75114091d6d2a85d886f3, type: 3}
+      propertyPath: m_text
+      value: 'Assets Explored: 0/10
+
+        Assets Answered: 0/10'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
