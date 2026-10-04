@@ -42,22 +42,6 @@ public class LevelTransitionManager : MonoBehaviour
 	}
 
 
-	// =========================================================
-	// UPDATE
-	// =========================================================
-
-	private void Update()
-	{
-		// TEST:
-		// Press L to show the Level Complete panel.
-		if (Keyboard.current != null &&
-			Keyboard.current.lKey.wasPressedThisFrame &&
-			!levelCompleteShown &&
-			!isTransitioning)
-		{
-			ShowLevelComplete();
-		}
-	}
 
 
 	// =========================================================

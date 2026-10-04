@@ -13,70 +13,56 @@ public class EndGameManager : MonoBehaviour
 	{
 		Time.timeScale = 1f;
 
-		// Display final score
+		// Display final statistics
 		if (finalScoreText != null)
 		{
 			finalScoreText.text =
-				"Final Score: " +
+				"FINAL SCORE: " +
 				GameManager.totalScore;
 		}
 
-		// Display total assets explored
 		if (finalExploredText != null)
 		{
 			finalExploredText.text =
-				"Assets Explored: " +
+				"ASSETS EXPLORED: " +
 				GameManager.totalAssetsExplored;
 		}
 
-		// Display total assets answered correctly
 		if (finalAnsweredText != null)
 		{
 			finalAnsweredText.text =
-				"Assets Answered: " +
+				"ASSETS ANSWERED CORRECTLY: " +
 				GameManager.totalAssetsAnswered;
 		}
+
+		Debug.Log("===== FINAL GAME STATS =====");
+		Debug.Log("Final Score: " + GameManager.totalScore);
+		Debug.Log("Total Assets Explored: " + GameManager.totalAssetsExplored);
+		Debug.Log("Total Assets Answered: " + GameManager.totalAssetsAnswered);
 	}
-
-
-	// =========================================================
-	// PLAY AGAIN
-	// =========================================================
 
 	public void PlayAgain()
 	{
 		Time.timeScale = 1f;
 
-		// Reset total game statistics
+		// Reset all game statistics
 		GameManager.totalScore = 0;
 		GameManager.totalAssetsExplored = 0;
 		GameManager.totalAssetsAnswered = 0;
 
-		// Load first level
-		SceneManager.LoadScene(1);
+		SceneManager.LoadScene("Level1");
 	}
-
-
-	// =========================================================
-	// MAIN MENU
-	// =========================================================
 
 	public void MainMenu()
 	{
 		Time.timeScale = 1f;
 
-		SceneManager.LoadScene(0);
+		SceneManager.LoadScene("MainMenu");
 	}
-
-
-	// =========================================================
-	// QUIT
-	// =========================================================
 
 	public void QuitGame()
 	{
 		Debug.Log("Quit Game");
-
 		Application.Quit();
 	}
 }
