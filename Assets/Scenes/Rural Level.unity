@@ -26002,6 +26002,7 @@ MonoBehaviour:
   canMove: 1
   defaultTerrainSpeedMultiplier: 0.8
   waterHeightOffset: 0.3
+  waterMask: {fileID: 0}
 --- !u!50 &928914016
 Rigidbody2D:
   serializedVersion: 5
