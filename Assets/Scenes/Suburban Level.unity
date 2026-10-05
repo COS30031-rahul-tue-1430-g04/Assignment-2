@@ -291,6 +291,14 @@ MonoBehaviour:
   sprintMultiplier: 2
   interactionRadius: 3
   canMove: 1
+  terrainSpeedMultiplier: 1
+  isSwimming: 0
+  swimmingMultiplier: 0.7
+  waterMask: {fileID: 33073590}
+  animator: {fileID: 33073589}
+  moveXParameter: MoveX
+  moveYParameter: MoveY
+  isMovingParameter: IsMoving
 --- !u!50 &33073585
 Rigidbody2D:
   serializedVersion: 5
@@ -3942,6 +3950,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TerrainZone
   speedMultiplier: 1
   isWater: 0
+  terrainName: Boundary
 --- !u!50 &455542708
 Rigidbody2D:
   serializedVersion: 5
@@ -488294,6 +488303,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TerrainZone
   speedMultiplier: 1
   isWater: 0
+  terrainName: Dirt Path
 --- !u!4 &982774900 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7255318118803066289, guid: ad192fad3d52bd244969a9040f945a0a, type: 3}
@@ -613453,6 +613463,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TerrainZone
   speedMultiplier: 1.35
   isWater: 0
+  terrainName: Stone Path
 --- !u!4 &1691250923 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7255318118803066289, guid: ad192fad3d52bd244969a9040f945a0a, type: 3}
@@ -614294,6 +614305,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TerrainZone
   speedMultiplier: 0.3
   isWater: 1
+  terrainName: Water
 --- !u!4 &1828836180 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7255318118803066289, guid: ad192fad3d52bd244969a9040f945a0a, type: 3}
@@ -618136,6 +618148,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TerrainZone
   speedMultiplier: 0.5
   isWater: 0
+  terrainName: Ground
 --- !u!4 &1895851384 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7255318118803066289, guid: ad192fad3d52bd244969a9040f945a0a, type: 3}
