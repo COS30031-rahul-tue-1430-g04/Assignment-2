@@ -216,7 +216,7 @@ public class PlayerController : MonoBehaviour
 				// If your SpriteMask covers the TOP half,
 				// use VisibleInsideMask.
 				spriteRenderer.maskInteraction =
-					SpriteMaskInteraction.VisibleInsideMask;
+					SpriteMaskInteraction.VisibleOutsideMask;
 			}
 
 			if (waterMask != null)
