@@ -13,6 +13,7 @@ Third party assets are listed bellow. Many of the assets used are not quite the 
 Assets created by our team are:
 ![Drain](./Assets/Tiles/Sprites/drain.png)
 ![waterMask](./Assets/Characters/Sprites/waterMask.png)
+![centre](./Assets/Tiles/Sprites/custom_asset.png)
 
 # Custom Licenses
 ## zepxl custom License
