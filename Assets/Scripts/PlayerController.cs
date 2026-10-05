@@ -16,18 +16,26 @@ public class PlayerController : MonoBehaviour
 	[Header("Movement Control")]
 	public bool canMove = true;
 
+	[Header("Terrain")]
 	[SerializeField]
 	private float defaultTerrainSpeedMultiplier = 0.8f;
+
+	[Header("Water")]
 	[SerializeField]
 	private float waterHeightOffset = 0.3f;
 
+	[SerializeField]
+	private SpriteMask waterMask;
+
 	private static readonly int XDirHash = Animator.StringToHash("XDir");
 	private static readonly int YDirHash = Animator.StringToHash("YDir");
+
 	private Animator animator;
 	private Rigidbody2D rb;
 	private SpriteRenderer spriteRenderer;
 
 	private float terrainSpeedMultiplier = 1f;
+
 	private readonly List<TerrainZone> activeZones = new();
 
 	private InputAction moveAction;
@@ -38,9 +46,10 @@ public class PlayerController : MonoBehaviour
 	private Vector2 targetVelocity;
 	private bool isSprinting;
 
-	void Start()
+	private void Start()
 	{
 		rb = GetComponent<Rigidbody2D>();
+
 		TryGetComponent(out animator);
 		TryGetComponent(out spriteRenderer);
 
@@ -55,121 +64,231 @@ public class PlayerController : MonoBehaviour
 		if (moveAction != null)
 		{
 			moveAction.Enable();
+
 			moveAction.performed += UpdateMoveInput;
 			moveAction.canceled += UpdateMoveInput;
 		}
+
 		if (sprint != null)
 		{
 			sprint.Enable();
+
 			sprint.performed += UpdateSprintInput;
 			sprint.canceled += UpdateSprintInput;
 		}
+
 		if (interact != null)
 		{
 			interact.Enable();
-			interact.started += ctx => TryInteract();
+
+			// IMPORTANT:
+			// Use a named method instead of a lambda.
+			interact.started += OnInteract;
+		}
+
+		// Water mask should be OFF when the game starts.
+		if (waterMask != null)
+		{
+			waterMask.enabled = false;
 		}
 	}
-	void OnDestroy()
+
+	private void OnDisable()
 	{
+		// Remove callbacks BEFORE the Player is disabled/destroyed.
+
 		if (moveAction != null)
 		{
 			moveAction.performed -= UpdateMoveInput;
 			moveAction.canceled -= UpdateMoveInput;
 		}
+
 		if (sprint != null)
 		{
 			sprint.performed -= UpdateSprintInput;
 			sprint.canceled -= UpdateSprintInput;
 		}
+
 		if (interact != null)
 		{
-			interact.started -= ctx => TryInteract();
+			interact.started -= OnInteract;
 		}
 	}
-	void UpdateMoveInput(InputAction.CallbackContext context)
+
+	private void OnInteract(InputAction.CallbackContext context)
 	{
+		// Extra safety check.
+		if (this == null || gameObject == null)
+			return;
+
+		TryInteract();
+	}
+
+	private void UpdateMoveInput(InputAction.CallbackContext context)
+	{
+		// Extra safety check.
+		if (this == null || gameObject == null)
+			return;
+
 		moveInput = context.ReadValue<Vector2>();
+
 		UpdateVelocity();
 
 		// Update animator parameters
 		if (animator != null && canMove)
 		{
-			animator.SetInteger(XDirHash, (int)Math.Round(moveInput.x));
-			animator.SetInteger(YDirHash, (int)Math.Round(moveInput.y));
+			animator.SetInteger(
+				XDirHash,
+				(int)Math.Round(moveInput.x)
+			);
+
+			animator.SetInteger(
+				YDirHash,
+				(int)Math.Round(moveInput.y)
+			);
 		}
 	}
-	void UpdateSprintInput(InputAction.CallbackContext context)
+
+	private void UpdateSprintInput(InputAction.CallbackContext context)
 	{
+		if (this == null || gameObject == null)
+			return;
+
 		isSprinting = context.ReadValue<float>() > 0.5f;
+
 		UpdateVelocity();
 	}
-	void UpdateVelocity()
+
+	private void UpdateVelocity()
 	{
-		if (!canMove) return;
+		if (!canMove)
+		{
+			targetVelocity = Vector2.zero;
+			return;
+		}
 
 		float currentSpeed =
 			isSprinting
 				? moveSpeed * sprintMultiplier
 				: moveSpeed;
+
 		currentSpeed *= terrainSpeedMultiplier;
+
 		targetVelocity = moveInput * currentSpeed;
 	}
 
-	void FixedUpdate()
+	private void FixedUpdate()
 	{
-		if (rb != null)
+		if (rb != null && canMove)
+		{
 			rb.linearVelocity = targetVelocity;
+		}
+		else if (rb != null)
+		{
+			rb.linearVelocity = Vector2.zero;
+		}
 	}
+
+	// =========================================================
+	// WATER / TERRAIN
+	// =========================================================
+
 	private void OnTriggerEnter2D(Collider2D other)
 	{
-		if (other.TryGetComponent(out TerrainZone zone))
+		if (!other.TryGetComponent(out TerrainZone zone))
+			return;
+
+		// Prevent duplicate entries.
+		if (!activeZones.Contains(zone))
 		{
 			activeZones.Add(zone);
-			if (zone.isWater)
-			{
-				if (spriteRenderer != null)
-					spriteRenderer.maskInteraction = SpriteMaskInteraction.VisibleOutsideMask;
-				if (rb != null)
-					//rb.MovePosition(rb.position + (Vector2.down * waterHeightOffset));
-					Debug.Log("Entered water zone: " + other.gameObject.name);
-			}
-			Debug.Log(
-				"Entered: " + other.gameObject.name +
-				" | Speed Multiplier: " + zone.speedMultiplier
-			);
-			UpdateTerrainSpeedMultiplier();
 		}
+
+		if (zone.isWater)
+		{
+			Debug.Log(
+				"Entered water zone: " +
+				other.gameObject.name
+			);
+
+			if (spriteRenderer != null)
+			{
+				// If your SpriteMask covers the TOP half,
+				// use VisibleInsideMask.
+				spriteRenderer.maskInteraction =
+					SpriteMaskInteraction.VisibleInsideMask;
+			}
+
+			if (waterMask != null)
+			{
+				waterMask.enabled = true;
+			}
+		}
+
+		Debug.Log(
+			"Entered: " +
+			other.gameObject.name +
+			" | Speed Multiplier: " +
+			zone.speedMultiplier
+		);
+
+		UpdateTerrainSpeedMultiplier();
 	}
+
 	private void OnTriggerExit2D(Collider2D other)
 	{
-		if (other.TryGetComponent(out TerrainZone zone))
+		if (!other.TryGetComponent(out TerrainZone zone))
+			return;
+
+		activeZones.Remove(zone);
+
+		if (zone.isWater)
 		{
-			activeZones.Remove(zone);
-			if (zone.isWater)
-			{
-				if (spriteRenderer != null)
-					spriteRenderer.maskInteraction = SpriteMaskInteraction.None;
-				if (rb != null)
-					//rb.MovePosition(rb.position + (Vector2.up * waterHeightOffset));
-					Debug.Log("Exited water zone: " + other.gameObject.name);
-			}
 			Debug.Log(
-				"Exited: " + other.gameObject.name +
-				" | Speed Multiplier: " + zone.speedMultiplier
+				"Exited water zone: " +
+				other.gameObject.name
 			);
-			UpdateTerrainSpeedMultiplier();
+
+			if (spriteRenderer != null)
+			{
+				spriteRenderer.maskInteraction =
+					SpriteMaskInteraction.None;
+			}
+
+			if (waterMask != null)
+			{
+				waterMask.enabled = false;
+			}
 		}
+
+		Debug.Log(
+			"Exited: " +
+			other.gameObject.name +
+			" | Speed Multiplier: " +
+			zone.speedMultiplier
+		);
+
+		UpdateTerrainSpeedMultiplier();
 	}
+
 	private void UpdateTerrainSpeedMultiplier()
 	{
-		terrainSpeedMultiplier = activeZones.Count > 0 ? activeZones[^1].speedMultiplier : defaultTerrainSpeedMultiplier;
+		terrainSpeedMultiplier =
+			activeZones.Count > 0
+				? activeZones[^1].speedMultiplier
+				: defaultTerrainSpeedMultiplier;
+
 		UpdateVelocity();
 	}
 
+	// =========================================================
+	// INTERACTION
+	// =========================================================
+
 	private void TryInteract()
 	{
-		if (!canMove) return;
+		if (!canMove)
+			return;
 
 		Debug.Log("E WAS PRESSED!");
 
@@ -185,7 +304,10 @@ public class PlayerController : MonoBehaviour
 		{
 			if (obj.TryGetComponent(out AssetInteraction asset))
 			{
-				Debug.Log("ASSET FOUND: " + asset.assetName);
+				Debug.Log(
+					"ASSET FOUND: " +
+					asset.assetName
+				);
 
 				if (asset.SelectAsset())
 					return;
@@ -195,7 +317,10 @@ public class PlayerController : MonoBehaviour
 		Debug.Log("NO ASSET NEARBY!");
 	}
 
-	// Disable player movement
+	// =========================================================
+	// MOVEMENT CONTROL
+	// =========================================================
+
 	public void DisableMovement()
 	{
 		canMove = false;
@@ -203,28 +328,41 @@ public class PlayerController : MonoBehaviour
 		moveInput = Vector2.zero;
 		isSprinting = false;
 		targetVelocity = Vector2.zero;
-		animator.SetInteger(XDirHash, 0);
-		animator.SetInteger(YDirHash, 0);
+
+		if (animator != null)
+		{
+			animator.SetInteger(XDirHash, 0);
+			animator.SetInteger(YDirHash, 0);
+		}
 
 		if (rb != null)
+		{
 			rb.linearVelocity = Vector2.zero;
+		}
 
 		Debug.Log("PLAYER MOVEMENT DISABLED");
 	}
 
-	// Enable player movement
 	public void EnableMovement()
 	{
 		canMove = true;
 
 		moveInput = Vector2.zero;
 		isSprinting = false;
+		targetVelocity = Vector2.zero;
 
 		Debug.Log("PLAYER MOVEMENT ENABLED");
 	}
 
+	// =========================================================
+	// DEBUG
+	// =========================================================
+
 	private void OnDrawGizmosSelected()
 	{
-		Gizmos.DrawWireSphere(transform.position, interactionRadius);
+		Gizmos.DrawWireSphere(
+			transform.position,
+			interactionRadius
+		);
 	}
 }
