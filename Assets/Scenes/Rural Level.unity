@@ -26000,6 +26000,8 @@ MonoBehaviour:
   sprintMultiplier: 2
   interactionRadius: 3
   canMove: 1
+  defaultTerrainSpeedMultiplier: 0.8
+  waterHeightOffset: 0.3
 --- !u!50 &928914016
 Rigidbody2D:
   serializedVersion: 5
@@ -35618,7 +35620,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 499655664446524306, guid: 89ae4ed28d010674bb4d48763f5a7b31, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1805557774787873751, guid: 89ae4ed28d010674bb4d48763f5a7b31, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
