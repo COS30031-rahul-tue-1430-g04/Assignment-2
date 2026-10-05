@@ -1,7 +1,10 @@
 # Game Description
 ‘Who Looks After This?’ is a 2D exploration and educational game designed in response to the Melton City Council Game Challenge. The game introduces players to the idea that different assets within a community can be managed and maintained by different parties. The main objective is to explore a neighbourhood, identify important community assets, and decide whether each asset is generally managed by the Council/Public sector or by a private owner.
+
 The game is designed for a young audience and focuses on learning through observation, exploration and interaction rather than providing large amounts of written information. Players are encouraged to look carefully at their surroundings and use the context of each asset to make a decision. This allows the game to communicate that community infrastructure is diverse and that responsibility for maintaining an asset is not always immediately obvious.
+
 The player controls a character who explores a series of neighbourhood environments. Throughout each level, certain objects are marked with a white star, indicating that they can be investigated. When the player approaches an asset and presses E, an interaction window appears asking:
+
 **“Who generally looks after this?”**
 
 # Connection to Melton City Council Game Challenge
@@ -27,7 +30,9 @@ Custom asset - we designed our custom asset based on melton city council buildin
 
 # How to play
 Explore the level for objects with white stars.
+
 ![assetExample](./assetExample.png)
+
 When you find one, press the interact key (“E”) to bring up a menu asking you to classify it as a public/council or private. After making your selection your score will either increase or decrease depending on whether you got it right or wrong. Regardless of whether you were correct, the progress bar will increase, showing you how many more objects you have to find. Once you find them all you can progress to the next level.
 
 # How to run
