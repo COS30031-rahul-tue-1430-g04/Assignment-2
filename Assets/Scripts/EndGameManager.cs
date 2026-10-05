@@ -50,7 +50,7 @@ public class EndGameManager : MonoBehaviour
 		GameManager.totalAssetsExplored = 0;
 		GameManager.totalAssetsAnswered = 0;
 
-		SceneManager.LoadScene("Level1");
+		SceneManager.LoadScene("Rural Level");
 	}
 
 	public void MainMenu()
