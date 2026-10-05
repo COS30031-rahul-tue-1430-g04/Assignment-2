@@ -42,8 +42,11 @@ There are three key programming systems. The first is Player Control. This is wh
 
 # Team contributions
 Darcy - custom asset, star identifiers, rural level design, prototyping some of the object interaction.
+
 Hakan - level completion screen, UI/UX, level transition manager, physics material, community precinct level design, player collision handling
+
 Nicholas - UI/UX, Feedback Panel, InteractionPanel, HUD, GameManager, AssetInteraction, MainMenuScene, EndGameScene, PausePanel, PlayerInteraction, LevelTransitionManager, GameProfiles
+
 Judah - player control/movement/animation, camera tracking, finding/editing/importing assets, autotiles, tilemaps, tilepallets, prefab tiles (including scripts for prefabs), suburban level design
 
 # Known issues
