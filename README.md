@@ -36,6 +36,9 @@ Explore the level for objects with white stars.
 When you find one, press the interact key (“E”) to bring up a menu asking you to classify it as a public/council or private. After making your selection your score will either increase or decrease depending on whether you got it right or wrong. Regardless of whether you were correct, the progress bar will increase, showing you how many more objects you have to find. Once you find them all you can progress to the next level.
 
 # How to run
+1. Download the zip from itch.io: [Who Looks After This? by cheddercheeese](https://cheddercheeese.itch.io/who-looks-after-this)
+2. Extract it
+3. Run `build/Assignment 2.exe`
 
 # Key programming systems
 There are three key programming systems. The first is Player Control. This is where the user input (except UI interaction) is given functionality. This includes adjusting player velocity and animation while also interacting with Asset Interaction. Asset Interaction is the system where the player interacts with nearby assets and chooses whether they are public or private. It updates the Game State System. The Game State System controls how far through the level the player is and what score they have. It also transfers the player between levels when they complete them.
@@ -50,8 +53,8 @@ Nicholas - UI/UX, Feedback Panel, InteractionPanel, HUD, GameManager, AssetInter
 Judah - player control/movement/animation, camera tracking, finding/editing/importing assets, autotiles, tilemaps, tilepallets, prefab tiles (including scripts for prefabs), suburban level design
 
 # Known issues
-Controllers can’t be used to navigate menus.
-The player doesn’t sink into water correctly.
-It is possible to leave the boundary sometimes.
-Some objects don’t have collision boxes.
-Street lights can display under players incorrectly.
+- Controllers can’t be used to navigate menus.
+- The player doesn’t sink into water correctly.
+- It is possible to leave the boundary sometimes.
+- Some objects don’t have collision boxes.
+- Street lights and rocks can display under players incorrectly.
